@@ -1,0 +1,6 @@
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\bin\MessageBoardService.dll.config
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\bin\MessageBoardService.dll
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\bin\MessageBoardService.pdb
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\obj\Debug\MessageBoardService.csprojResolveAssemblyReference.cache
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\obj\Debug\MessageBoardService.dll
+E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoardService\obj\Debug\MessageBoardService.pdb
