@@ -1,0 +1,3 @@
+[submodule "MessageBoardCommon"]
+	path = MessageBoardCommon
+	url = git@github.com:teneaandrei/MessageBoardCommon.git
