@@ -62,10 +62,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessageBoardDAL.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageBoardDAL.Designer.cs">
+    <Compile Include="MessageBoardEF.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MessageBoardDAL.edmx</DependentUpon>
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblComment.cs">
@@ -80,24 +80,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="MessageBoardDAL.edmx">
+    <EntityDeploy Include="MessageBoardEF.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MessageBoardDAL.Designer.cs</LastGenOutput>
+      <LastGenOutput>MessageBoardEF.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="MessageBoardDAL.edmx.diagram">
-      <DependentUpon>MessageBoardDAL.edmx</DependentUpon>
+    <None Include="MessageBoardEF.edmx.diagram">
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MessageBoardDAL.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageBoardDAL.edmx</DependentUpon>
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
       <LastGenOutput>MessageBoardDAL.Context.cs</LastGenOutput>
     </Content>
     <Content Include="MessageBoardDAL.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageBoardDAL.edmx</DependentUpon>
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
       <LastGenOutput>MessageBoardDAL.cs</LastGenOutput>
     </Content>
   </ItemGroup>
