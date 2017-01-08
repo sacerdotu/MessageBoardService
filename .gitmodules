@@ -1,0 +1,4 @@
+[submodule "src/MessageBoardCommon"]
+	path = src/MessageBoardCommon
+	url = https://github.com/teneaandrei/MessageBoardCommon
+	branch = develop
