@@ -9,6 +9,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MessageBoardDB", "MessageBo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBoardEF", "MessageBoardEF\MessageBoardEF.csproj", "{B8415795-BE98-4532-8CB1-6E4B1406C82D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBoardCommon", "MessageBoardCommon\MessageBoardCommon\MessageBoardCommon.csproj", "{0A09B058-1BA7-49C7-9738-5B7ADDD886D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{B8415795-BE98-4532-8CB1-6E4B1406C82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8415795-BE98-4532-8CB1-6E4B1406C82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8415795-BE98-4532-8CB1-6E4B1406C82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A09B058-1BA7-49C7-9738-5B7ADDD886D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A09B058-1BA7-49C7-9738-5B7ADDD886D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A09B058-1BA7-49C7-9738-5B7ADDD886D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A09B058-1BA7-49C7-9738-5B7ADDD886D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
