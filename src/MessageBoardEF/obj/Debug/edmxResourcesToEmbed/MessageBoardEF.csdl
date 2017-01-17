@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MessageBoardModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblComment">
+    <Key>
+      <PropertyRef Name="CommentID" />
+    </Key>
+    <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="PostID" Type="Int32" />
+    <Property Name="MainComment" Type="Int32" />
+    <Property Name="CommentContent" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsBlocked" Type="Boolean" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="tblComment1" Relationship="Self.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment" ToRole="tblComment1" />
+    <NavigationProperty Name="tblComment2" Relationship="Self.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment1" ToRole="tblComment" />
+    <NavigationProperty Name="tblPost" Relationship="Self.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblComment" ToRole="tblPost" />
+    <NavigationProperty Name="tblUser" Relationship="Self.FK_tblComment_tblUser" FromRole="tblComment" ToRole="tblUser" />
+  </EntityType>
+  <EntityType Name="tblPost">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="PostText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PostImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IsPublished" Type="Boolean" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="tblComments" Relationship="Self.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblPost" ToRole="tblComment" />
+    <NavigationProperty Name="tblUser" Relationship="Self.FK_tblPost_tblUser" FromRole="tblPost" ToRole="tblUser" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Function" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IsAdministrator" Type="Boolean" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="AccountCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="tblComments" Relationship="Self.FK_tblComment_tblUser" FromRole="tblUser" ToRole="tblComment" />
+    <NavigationProperty Name="tblPosts" Relationship="Self.FK_tblPost_tblUser" FromRole="tblUser" ToRole="tblPost" />
+  </EntityType>
+  <Association Name="FK__tblCommen__MainC__5DCAEF64">
+    <End Role="tblComment" Type="Self.tblComment" Multiplicity="0..1" />
+    <End Role="tblComment1" Type="Self.tblComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblComment">
+        <PropertyRef Name="CommentID" />
+      </Principal>
+      <Dependent Role="tblComment1">
+        <PropertyRef Name="MainComment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblCommen__PostI__5CD6CB2B">
+    <End Role="tblPost" Type="Self.tblPost" Multiplicity="0..1" />
+    <End Role="tblComment" Type="Self.tblComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblPost">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="tblComment">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblComment_tblUser">
+    <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+    <End Role="tblComment" Type="Self.tblComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="tblComment">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblPost_tblUser">
+    <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+    <End Role="tblPost" Type="Self.tblPost" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="tblPost">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MessageBoardEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblComments" EntityType="Self.tblComment" />
+    <EntitySet Name="tblPosts" EntityType="Self.tblPost" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+    <AssociationSet Name="FK__tblCommen__MainC__5DCAEF64" Association="Self.FK__tblCommen__MainC__5DCAEF64">
+      <End Role="tblComment" EntitySet="tblComments" />
+      <End Role="tblComment1" EntitySet="tblComments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblCommen__PostI__5CD6CB2B" Association="Self.FK__tblCommen__PostI__5CD6CB2B">
+      <End Role="tblPost" EntitySet="tblPosts" />
+      <End Role="tblComment" EntitySet="tblComments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblComment_tblUser" Association="Self.FK_tblComment_tblUser">
+      <End Role="tblUser" EntitySet="tblUsers" />
+      <End Role="tblComment" EntitySet="tblComments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblPost_tblUser" Association="Self.FK_tblPost_tblUser">
+      <End Role="tblUser" EntitySet="tblUsers" />
+      <End Role="tblPost" EntitySet="tblPosts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

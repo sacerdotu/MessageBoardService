@@ -12,7 +12,7 @@
 		</CustomData>
 		<CustomData Category="Reference" Type="Assembly">
 			<Metadata Name="LogicalName" Value="MessageBoardDB.dll" />
-			<Metadata Name="FileName" Value="E:\MESSAGEBOARD\MESSAGEBOARD\SRC\MESSAGEBOARDDB\OBJ\DEBUG\MESSAGEBOARDDB.DLL" />
+			<Metadata Name="FileName" Value="E:\MESSAGEBOARD\MESSAGEBOARDSERVICE\SRC\MESSAGEBOARDDB\OBJ\DEBUG\MESSAGEBOARDDB.DLL" />
 			<Metadata Name="AssemblyName" Value="MessageBoardDB" />
 			<Metadata Name="PermissionSet" Value="SAFE" />
 			<Metadata Name="Owner" Value="" />
@@ -20,7 +20,7 @@
 			<Metadata Name="IsVisible" Value="True" />
 			<Metadata Name="IsModelAware" Value="True" />
 			<Metadata Name="SkipCreationIfEmpty" Value="True" />
-			<Metadata Name="AssemblySymbolsName" Value="E:\MessageBoard\MessageBoard\src\MessageBoardDB\obj\Debug\MessageBoardDB.pdb" />
+			<Metadata Name="AssemblySymbolsName" Value="E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\MessageBoardDB.pdb" />
 		</CustomData>
 		<CustomData Category="SqlCmdVariables" Type="SqlCmdVariable" />
 	</Header>
