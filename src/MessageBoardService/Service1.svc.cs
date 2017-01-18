@@ -26,11 +26,11 @@ namespace MessageBoardService
                     addUser.LastName = user.LastName;
                     addUser.Username = user.Username;
                     addUser.PasswordHash = user.PasswordHash;
+                    addUser.City = user.City;
+                    addUser.Country = user.Country;
+                    addUser.Function = user.Function;
 
                     addUser.AccountCreationDate = DateTime.Now;
-                    addUser.City = "Craiova";
-                    addUser.Country = "Romania";
-                    addUser.Function = "Programmer";
                     addUser.IsActive = true;
                     addUser.IsAdministrator = true;
 
