@@ -1,4 +1,5 @@
-﻿using MessageBoardDAL;
+﻿using AutoMapper;
+using MessageBoardDAL;
 using MessageBoardDTO;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace MessageBoardService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
+        #region InsertNewUser
         public void InsertNewUser(UserDTO user)
         {
             try
@@ -41,10 +43,40 @@ namespace MessageBoardService
             }
             catch (Exception)
             {
-
                 throw;
             }
             
+        }
+        #endregion
+
+        public UserDTO CheckUserAndPassword(string username)
+        {
+            try
+            {
+                UserDTO user = new UserDTO();
+                using (var context = new MessageBoardEntities())
+                {
+                    var login = context.tblUsers.FirstOrDefault(x => x.Username == username);
+
+                    if(login != null)
+                    {
+                        user.Username = login.Username;
+                        user.PasswordHash = login.PasswordHash;
+                        user.PasswordSalt = login.PasswordSalt;
+
+                        return user;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

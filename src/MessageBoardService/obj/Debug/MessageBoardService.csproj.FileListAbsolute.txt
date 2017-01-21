@@ -7,12 +7,14 @@ E:\MessageBoard\MessageBoard\MessageBoardService\MessageBoardService\MessageBoar
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardService.dll.config
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardService.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardService.pdb
+E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\AutoMapper.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\EntityFramework.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\EntityFramework.SqlServer.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardCommon.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardDAL.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardCommon.pdb
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\MessageBoardDAL.pdb
+E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\AutoMapper.xml
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\EntityFramework.xml
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\bin\EntityFramework.SqlServer.xml
 E:\MessageBoard\MessageBoardService\src\MessageBoardService\obj\Debug\MessageBoardService.csprojResolveAssemblyReference.cache

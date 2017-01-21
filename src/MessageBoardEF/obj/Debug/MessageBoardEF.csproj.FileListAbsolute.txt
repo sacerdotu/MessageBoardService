@@ -5,6 +5,5 @@ E:\MessageBoard\MessageBoardService\src\MessageBoardEF\bin\Debug\EntityFramework
 E:\MessageBoard\MessageBoardService\src\MessageBoardEF\bin\Debug\EntityFramework.SqlServer.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardEF\bin\Debug\EntityFramework.xml
 E:\MessageBoard\MessageBoardService\src\MessageBoardEF\bin\Debug\EntityFramework.SqlServer.xml
-E:\MessageBoard\MessageBoardService\src\MessageBoardEF\obj\Debug\MessageBoardEF.csprojResolveAssemblyReference.cache
 E:\MessageBoard\MessageBoardService\src\MessageBoardEF\obj\Debug\MessageBoardDAL.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardEF\obj\Debug\MessageBoardDAL.pdb

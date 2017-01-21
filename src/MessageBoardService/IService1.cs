@@ -14,5 +14,7 @@ namespace MessageBoardService
     {
         [OperationContract]
         void InsertNewUser(UserDTO user);
+        [OperationContract]
+        UserDTO CheckUserAndPassword(string username);
     }
 }
