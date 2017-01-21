@@ -29,7 +29,7 @@ namespace MessageBoardService
                     addUser.City = user.City;
                     addUser.Country = user.Country;
                     addUser.Function = user.Function;
-
+                    addUser.PasswordSalt = user.PasswordSalt;
                     addUser.AccountCreationDate = DateTime.Now;
                     addUser.IsActive = true;
                     addUser.IsAdministrator = true;

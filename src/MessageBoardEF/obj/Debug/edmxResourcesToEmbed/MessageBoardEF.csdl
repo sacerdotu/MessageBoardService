@@ -47,6 +47,7 @@
     <Property Name="AccountCreationDate" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="tblComments" Relationship="Self.FK_tblComment_tblUser" FromRole="tblUser" ToRole="tblComment" />
     <NavigationProperty Name="tblPosts" Relationship="Self.FK_tblPost_tblUser" FromRole="tblUser" ToRole="tblPost" />
+    <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK__tblCommen__MainC__5DCAEF64">
     <End Role="tblComment" Type="Self.tblComment" Multiplicity="0..1" />
@@ -116,5 +117,12 @@
       <End Role="tblUser" EntitySet="tblUsers" />
       <End Role="tblPost" EntitySet="tblPosts" />
     </AssociationSet>
+    <EntitySet Name="C__RefactorLog" EntityType="MessageBoardModel.C__RefactorLog" />
   </EntityContainer>
+  <EntityType Name="C__RefactorLog">
+    <Key>
+      <PropertyRef Name="OperationKey" />
+    </Key>
+    <Property Name="OperationKey" Type="Guid" Nullable="false" />
+  </EntityType>
 </Schema>

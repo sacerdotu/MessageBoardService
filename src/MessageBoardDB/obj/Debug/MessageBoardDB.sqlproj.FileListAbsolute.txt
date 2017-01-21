@@ -19,9 +19,5 @@ E:\MessageBoard\MessageBoard\src\MessageBoardDB\obj\Debug\MessageBoardDB.pdb
 E:\MessageBoard\MessageBoardService\src\MessageBoardDB\bin\Debug\MessageBoardDB.dacpac
 E:\MessageBoard\MessageBoardService\src\MessageBoardDB\bin\Debug\MessageBoardDB.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardDB\bin\Debug\MessageBoardDB.pdb
-E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\Model.xml
-E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\refactor.xml
-E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\postdeploy.sql
-E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\predeploy.sql
 E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\MessageBoardDB.dll
 E:\MessageBoard\MessageBoardService\src\MessageBoardDB\obj\Debug\MessageBoardDB.pdb

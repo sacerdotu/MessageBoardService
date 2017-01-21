@@ -29,6 +29,7 @@
     <EntitySetMapping Name="tblUsers">
       <EntityTypeMapping TypeName="MessageBoardModel.tblUser">
         <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -41,6 +42,13 @@
           <ScalarProperty Name="IsAdministrator" ColumnName="IsAdministrator" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="AccountCreationDate" ColumnName="AccountCreationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__RefactorLog">
+      <EntityTypeMapping TypeName="MessageBoardModel.C__RefactorLog">
+        <MappingFragment StoreEntitySet="__RefactorLog">
+          <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
