@@ -34,7 +34,7 @@ namespace MessageBoardService
                     addUser.PasswordSalt = user.PasswordSalt;
                     addUser.AccountCreationDate = DateTime.Now;
                     addUser.IsActive = true;
-                    addUser.IsAdministrator = true;
+                    addUser.IsAdministrator = false;
 
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
