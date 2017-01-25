@@ -3,6 +3,7 @@ using MessageBoardDAL;
 using MessageBoardDTO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -41,9 +42,17 @@ namespace MessageBoardService
                 }
                 
             }
-            catch (Exception)
+            catch (EntityException ex)
             {
-                throw;
+                throw (new EntityException("There is the following error: {0}", ex));
+            }
+            catch (NullReferenceException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             
         }
@@ -72,10 +81,14 @@ namespace MessageBoardService
                     }
                 }
             }
-            catch (Exception)
+            catch (NullReferenceException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
     }
