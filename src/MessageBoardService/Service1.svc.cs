@@ -58,6 +58,7 @@ namespace MessageBoardService
         }
         #endregion
 
+        #region CheckUserAndPassword
         public UserDTO CheckUserAndPassword(string username)
         {
             try
@@ -91,5 +92,50 @@ namespace MessageBoardService
                 throw ex;
             }
         }
+        #endregion
+
+        #region FillUsersGrid
+        public List<UserDTO> FillUsersGrid()
+        {
+            List<UserDTO> usersList = new List<UserDTO>();
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var users = context.tblUsers;
+                    if (users != null)
+                    {
+                        foreach (var user in users)
+                        {
+                            UserDTO userDTO = new UserDTO();
+                            userDTO.UserID = user.UserID;
+                            userDTO.FirstName = user.FirstName;
+                            userDTO.LastName = user.LastName;
+                            userDTO.Username = user.Username;
+                            userDTO.PasswordHash = user.PasswordHash;
+                            userDTO.City = user.City;
+                            userDTO.Country = user.Country;
+                            userDTO.Function = user.Function;
+                            userDTO.PasswordSalt = user.PasswordSalt;
+                            userDTO.AccountCreationDate = user.AccountCreationDate;
+                            userDTO.IsActive = user.IsActive;
+                            userDTO.IsAdministrator = user.IsAdministrator;
+
+                            usersList.Add(userDTO);
+                        }
+                        return usersList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }
