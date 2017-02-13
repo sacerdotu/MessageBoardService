@@ -136,6 +136,38 @@ namespace MessageBoardService
                 throw ex;
             }
         }
+        public UserDTO GetUserDetails(int userID)
+        {
+            UserDTO userDTO = new UserDTO();
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var user = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
+                    if(user != null)
+                    {
+                        userDTO.UserID = user.UserID;
+                        userDTO.FirstName = user.FirstName;
+                        userDTO.LastName = user.LastName;
+                        userDTO.Username = user.Username;
+                        userDTO.PasswordHash = user.PasswordHash;
+                        userDTO.City = user.City;
+                        userDTO.Country = user.Country;
+                        userDTO.Function = user.Function;
+                        userDTO.PasswordSalt = user.PasswordSalt;
+                        userDTO.AccountCreationDate = user.AccountCreationDate;
+                        userDTO.IsActive = user.IsActive;
+                        userDTO.IsAdministrator = user.IsAdministrator;
+                    }
+                    return userDTO;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
     }
 }

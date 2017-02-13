@@ -18,5 +18,7 @@ namespace MessageBoardService
         UserDTO CheckUserAndPassword(string username);
         [OperationContract]
         List<UserDTO> FillUsersGrid();
+        [OperationContract]
+        UserDTO GetUserDetails(int userID);
     }
 }
