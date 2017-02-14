@@ -136,6 +136,8 @@ namespace MessageBoardService
                 throw ex;
             }
         }
+        #endregion
+        #region GetUserDetails
         public UserDTO GetUserDetails(int userID)
         {
             UserDTO userDTO = new UserDTO();
@@ -168,6 +170,30 @@ namespace MessageBoardService
                 throw;
             }
         }
+        #endregion
+        #region IsAdministrator
+        public bool IsAdministrator(string username)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var user = context.tblUsers.FirstOrDefault(x => x.Username == username);
+                    if (user != null)
+                    {
+                        return user.IsAdministrator;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            }
         #endregion
     }
 }

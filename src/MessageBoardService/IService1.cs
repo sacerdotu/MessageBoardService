@@ -20,5 +20,7 @@ namespace MessageBoardService
         List<UserDTO> FillUsersGrid();
         [OperationContract]
         UserDTO GetUserDetails(int userID);
+        [OperationContract]
+        bool IsAdministrator(string username);
     }
 }
