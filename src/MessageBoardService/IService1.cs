@@ -22,5 +22,7 @@ namespace MessageBoardService
         UserDTO GetUserDetails(int userID);
         [OperationContract]
         bool IsAdministrator(string username);
+        [OperationContract]
+        void ChangePassword(UserDTO user);
     }
 }

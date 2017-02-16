@@ -195,5 +195,31 @@ namespace MessageBoardService
             }
             }
         #endregion
+
+        #region ChangePassword
+        public void ChangePassword(UserDTO user)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var userUpdated = context.tblUsers.FirstOrDefault(x => x.Username == user.Username);
+                    if (userUpdated != null)
+                    {
+                        tblUser newPassword = new tblUser();
+                        userUpdated.PasswordHash = user.PasswordHash;
+                        userUpdated.PasswordSalt = user.PasswordSalt;
+                       // context.tblUsers.Add(newPassword);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
     }
 }
