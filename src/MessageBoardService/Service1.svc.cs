@@ -209,7 +209,6 @@ namespace MessageBoardService
                         tblUser newPassword = new tblUser();
                         userUpdated.PasswordHash = user.PasswordHash;
                         userUpdated.PasswordSalt = user.PasswordSalt;
-                       // context.tblUsers.Add(newPassword);
                         context.SaveChanges();
                     }
                 }
