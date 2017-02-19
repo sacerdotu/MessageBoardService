@@ -171,6 +171,7 @@ namespace MessageBoardService
             }
         }
         #endregion
+
         #region IsAdministrator
         public bool IsAdministrator(string username)
         {
@@ -211,6 +212,33 @@ namespace MessageBoardService
                         userUpdated.PasswordSalt = user.PasswordSalt;
                         context.SaveChanges();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region UpdateIsActive
+        public void UpdateIsActive(List<UserDTO> users)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    foreach (var item in users)
+                    {
+                        var userUpdated = context.tblUsers.FirstOrDefault(x => x.UserID == item.UserID);
+                        if (userUpdated != null)
+                        {
+                            userUpdated.IsActive = item.IsActive;
+                            context.SaveChanges();
+                        }
+                    }
+                   
                 }
             }
             catch (Exception ex)

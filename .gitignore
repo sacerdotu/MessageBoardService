@@ -4,3 +4,5 @@ src/packages/
 src/MessageBoard/obj/
 src/MessageBoardController/obj/
 src/MessageBoardDTO/obj/
+src/MessageBoardDB/obj/Debug/Model.xml
+src/MessageBoardDB/obj/Debug/
