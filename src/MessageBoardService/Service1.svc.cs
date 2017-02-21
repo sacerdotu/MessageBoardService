@@ -207,7 +207,6 @@ namespace MessageBoardService
                     var userUpdated = context.tblUsers.FirstOrDefault(x => x.Username == user.Username);
                     if (userUpdated != null)
                     {
-                        tblUser newPassword = new tblUser();
                         userUpdated.PasswordHash = user.PasswordHash;
                         userUpdated.PasswordSalt = user.PasswordSalt;
                         context.SaveChanges();
@@ -239,6 +238,37 @@ namespace MessageBoardService
                         }
                     }
                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region AddNewPost
+        public void AddNewPost(List<string> addPost)
+        {
+            try
+            {
+                string username = addPost[0];
+                string post = addPost[1];
+                using (var context = new MessageBoardEntities())
+                {
+                    var user = context.tblUsers.FirstOrDefault(x => x.Username == username);
+                    if (user != null)
+                    {
+                        tblPost addNewPost = context.tblPosts.Create();
+                        addNewPost.UserID = user.UserID;
+                        addNewPost.PostText = post;
+                        addNewPost.IsPublished = true;
+                        addNewPost.CreationDate = DateTime.Now;
+
+                        context.tblPosts.Add(addNewPost);
+                        context.SaveChanges();
+                    }
                 }
             }
             catch (Exception ex)

@@ -26,5 +26,7 @@ namespace MessageBoardService
         void ChangePassword(UserDTO user);
         [OperationContract]
         void UpdateIsActive(List<UserDTO> users);
+        [OperationContract]
+        void AddNewPost(List<string> addPost);
     }
 }
