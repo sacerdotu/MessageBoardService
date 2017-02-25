@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MessageBoardCommon;
 using MessageBoardDAL;
 using MessageBoardDTO;
 using System;
@@ -36,19 +37,11 @@ namespace MessageBoardService
                     addUser.AccountCreationDate = DateTime.Now;
                     addUser.IsActive = true;
                     addUser.IsAdministrator = false;
-
+                    
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
                 }
                 
-            }
-            catch (EntityException ex)
-            {
-                throw (new EntityException("There is the following error: {0}", ex));
-            }
-            catch (NullReferenceException ex)
-            {
-                throw ex;
             }
             catch (Exception ex)
             {
@@ -82,13 +75,8 @@ namespace MessageBoardService
                     }
                 }
             }
-            catch (NullReferenceException ex)
-            {
-                throw ex;
-            }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -164,10 +152,9 @@ namespace MessageBoardService
                     return userDTO;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
         }
         #endregion
@@ -190,11 +177,11 @@ namespace MessageBoardService
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
-            }
+        }
         #endregion
 
         #region ChangePassword
@@ -215,7 +202,6 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
