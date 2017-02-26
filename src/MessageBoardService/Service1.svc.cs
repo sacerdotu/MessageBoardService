@@ -259,10 +259,60 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
         #endregion
+
+        public Dictionary<PostDTO,DateTime?> FillPostsGrid()
+        {
+            Dictionary<PostDTO, DateTime?> postsDictionary = new Dictionary<PostDTO, DateTime?>();
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var posts = context.tblPosts;
+                    if(posts != null)
+                    {
+                        foreach (var post in posts)
+                        {
+                            PostDTO postDTO = new PostDTO();
+                            UserDTO userDTO = new UserDTO();
+                            postDTO.tblUser = userDTO;
+
+                            postDTO.PostID = post.PostID;
+                            postDTO.PostText = post.PostText;
+                            postDTO.PostImage = post.PostImage;
+                            postDTO.IsPublished = post.IsPublished;
+                            postDTO.CreationDate = post.CreationDate;
+                            postDTO.tblUser.FullName = post.tblUser.FirstName + " " + post.tblUser.LastName;
+                            postDTO.tblUser.Username = post.tblUser.Username;
+                            DateTime? lastComment = new DateTime?();
+                            var c = post.tblComments.Count(x => x.CreationDate != null);
+                            if (c == 0)
+                            {
+                                lastComment = null;
+                            }
+                            else
+                            {
+                                lastComment = post.tblComments.Max(x => x.CreationDate);
+                            }
+
+                            postsDictionary.Add(postDTO, lastComment);
+                        }
+                        return postsDictionary;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

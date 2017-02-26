@@ -28,5 +28,7 @@ namespace MessageBoardService
         void UpdateIsActive(List<UserDTO> users);
         [OperationContract]
         void AddNewPost(List<string> addPost);
+        [OperationContract]
+        Dictionary<PostDTO, DateTime?> FillPostsGrid();
     }
 }
