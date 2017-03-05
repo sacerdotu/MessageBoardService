@@ -18,7 +18,7 @@ namespace MessageBoardService
     public class MessageBoardService : IMessageBoardService
     {
         #region InsertNewUser
-        public void InsertNewUser(UserDTO user)
+        public int InsertNewUser(UserDTO user)
         {
             try
             {
@@ -34,18 +34,21 @@ namespace MessageBoardService
                     addUser.Country = user.Country;
                     addUser.Function = user.Function;
                     addUser.PasswordSalt = user.PasswordSalt;
+                    addUser.ProfileImage = user.ProfileImage;
                     addUser.AccountCreationDate = DateTime.Now;
                     addUser.IsActive = true;
                     addUser.IsAdministrator = false;
-                    
+
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
+                    return addUser.UserID;
                 }
-                
+
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return 0;
             }
             
         }
@@ -66,6 +69,7 @@ namespace MessageBoardService
                         user.Username = login.Username;
                         user.PasswordHash = login.PasswordHash;
                         user.PasswordSalt = login.PasswordSalt;
+                        user.UserID = login.UserID;
 
                         return user;
                     }
@@ -77,7 +81,8 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return null;
             }
         }
         #endregion
@@ -121,7 +126,8 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return null;
             }
         }
         #endregion
@@ -146,6 +152,7 @@ namespace MessageBoardService
                         userDTO.Country = user.Country;
                         userDTO.Function = user.Function;
                         userDTO.PasswordSalt = user.PasswordSalt;
+                        userDTO.ProfileImage = user.ProfileImage;
                         userDTO.AccountCreationDate = user.AccountCreationDate;
                         userDTO.IsActive = user.IsActive;
                         userDTO.IsAdministrator = user.IsAdministrator;
@@ -155,19 +162,20 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return null;
             }
         }
         #endregion
 
         #region IsAdministrator
-        public bool IsAdministrator(string username)
+        public bool IsAdministrator(int userID)
         {
             try
             {
                 using (var context = new MessageBoardEntities())
                 {
-                    var user = context.tblUsers.FirstOrDefault(x => x.Username == username);
+                    var user = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
                     if (user != null)
                     {
                         return user.IsAdministrator;
@@ -180,36 +188,43 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                throw;
             }
         }
         #endregion
 
         #region ChangePassword
-        public void ChangePassword(UserDTO user)
+        public bool ChangePassword(UserDTO user)
         {
             try
             {
                 using (var context = new MessageBoardEntities())
                 {
-                    var userUpdated = context.tblUsers.FirstOrDefault(x => x.Username == user.Username);
+                    var userUpdated = context.tblUsers.FirstOrDefault(x => x.UserID == user.UserID);
                     if (userUpdated != null)
                     {
                         userUpdated.PasswordHash = user.PasswordHash;
                         userUpdated.PasswordSalt = user.PasswordSalt;
                         context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return false;
             }
         }
         #endregion
 
         #region UpdateIsActive
-        public void UpdateIsActive(List<UserDTO> users)
+        public bool UpdateIsActive(List<UserDTO> users)
         {
             try
             {
@@ -224,47 +239,44 @@ namespace MessageBoardService
                             context.SaveChanges();
                         }
                     }
-                   
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return false;
             }
         }
         #endregion
 
         #region AddNewPost
-        public void AddNewPost(List<string> addPost)
+        public bool AddNewPost(PostDTO addPost)
         {
             try
             {
-                string username = addPost[0];
-                string post = addPost[1];
                 using (var context = new MessageBoardEntities())
                 {
-                    var user = context.tblUsers.FirstOrDefault(x => x.Username == username);
-                    if (user != null)
-                    {
                         tblPost addNewPost = context.tblPosts.Create();
-                        addNewPost.UserID = user.UserID;
-                        addNewPost.PostText = post;
+                        addNewPost.UserID = addPost.UserID;
+                        addNewPost.PostText = addPost.PostText;
                         addNewPost.IsPublished = true;
                         addNewPost.CreationDate = DateTime.Now;
 
                         context.tblPosts.Add(addNewPost);
                         context.SaveChanges();
-                    }
+                        return true;
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return false;
             }
         }
         #endregion
 
+        #region FillPostsGrid
         public Dictionary<PostDTO,DateTime?> FillPostsGrid()
         {
             Dictionary<PostDTO, DateTime?> postsDictionary = new Dictionary<PostDTO, DateTime?>();
@@ -311,9 +323,10 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return null;
             }
         }
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace MessageBoardService
     public interface IMessageBoardService
     {
         [OperationContract]
-        void InsertNewUser(UserDTO user);
+        int InsertNewUser(UserDTO user);
         [OperationContract]
         UserDTO CheckUserAndPassword(string username);
         [OperationContract]
@@ -21,13 +21,13 @@ namespace MessageBoardService
         [OperationContract]
         UserDTO GetUserDetails(int userID);
         [OperationContract]
-        bool IsAdministrator(string username);
+        bool IsAdministrator(int userID);
         [OperationContract]
-        void ChangePassword(UserDTO user);
+        bool ChangePassword(UserDTO user);
         [OperationContract]
-        void UpdateIsActive(List<UserDTO> users);
+        bool UpdateIsActive(List<UserDTO> users);
         [OperationContract]
-        void AddNewPost(List<string> addPost);
+        bool AddNewPost(PostDTO addPost);
         [OperationContract]
         Dictionary<PostDTO, DateTime?> FillPostsGrid();
     }
