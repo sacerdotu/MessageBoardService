@@ -29,6 +29,6 @@ namespace MessageBoardService
         [OperationContract]
         bool AddNewPost(PostDTO addPost);
         [OperationContract]
-        Dictionary<PostDTO, DateTime?> FillPostsGrid();
+        List<PostDTO> FillPostsGrid();
     }
 }

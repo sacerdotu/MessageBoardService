@@ -277,16 +277,17 @@ namespace MessageBoardService
         #endregion
 
         #region FillPostsGrid
-        public Dictionary<PostDTO,DateTime?> FillPostsGrid()
+        public List<PostDTO> FillPostsGrid()
         {
-            Dictionary<PostDTO, DateTime?> postsDictionary = new Dictionary<PostDTO, DateTime?>();
             try
             {
+                List<PostDTO> addPosts = new List<PostDTO>();
                 using (var context = new MessageBoardEntities())
                 {
                     var posts = context.tblPosts;
                     if(posts != null)
                     {
+                       
                         foreach (var post in posts)
                         {
                             PostDTO postDTO = new PostDTO();
@@ -300,20 +301,19 @@ namespace MessageBoardService
                             postDTO.CreationDate = post.CreationDate;
                             postDTO.tblUser.FullName = post.tblUser.FirstName + " " + post.tblUser.LastName;
                             postDTO.tblUser.Username = post.tblUser.Username;
-                            DateTime? lastComment = new DateTime?();
                             var c = post.tblComments.Count(x => x.CreationDate != null);
                             if (c == 0)
                             {
-                                lastComment = null;
+                                postDTO.LastCommentDate = null;
                             }
                             else
                             {
-                                lastComment = post.tblComments.Max(x => x.CreationDate);
+                                postDTO.LastCommentDate = post.tblComments.Max(x => x.CreationDate);
                             }
 
-                            postsDictionary.Add(postDTO, lastComment);
+                            addPosts.Add(postDTO);
                         }
-                        return postsDictionary;
+                        return addPosts;
                     }
                     else
                     {
