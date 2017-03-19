@@ -43,6 +43,7 @@ namespace MessageBoardService
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
                     returnUser.UserID = addUser.UserID;
+                    returnUser.IsError = false;
                     
                     return returnUser;
                 }
@@ -51,6 +52,8 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                returnUser.IsError = true;
+                returnUser.ErrorMessage = ex.Message;
                 return returnUser;
             }
             
