@@ -34,5 +34,7 @@ namespace MessageBoardService
         bool ChangeProfilePicture(UserDTO user);
         [OperationContract]
         UserDTO GetProfilePicture(int userID);
+        [OperationContract]
+        List<CommentDTO> GetCommentsForPostID(int postID);
     }
 }

@@ -383,5 +383,46 @@ namespace MessageBoardService
             }
         }
         #endregion
+
+        #region GetCommentsForPostID
+        public List<CommentDTO> GetCommentsForPostID(int postID)
+        {
+            try
+            {
+                List<CommentDTO> commentsDTO = new List<CommentDTO>();
+                using (var context = new MessageBoardEntities())
+                {
+                    var comments = context.tblComments.Where(x => x.PostID == postID);
+                    if (comments != null)
+                    {
+                        foreach (var comment in comments)
+                        {
+                            CommentDTO commentDTO = new CommentDTO();
+                            UserDTO userDTO = new UserDTO();
+                            commentDTO.tblUser = userDTO;
+
+                            commentDTO.CommentContent = comment.CommentContent;
+                            commentDTO.CommentID = comment.CommentID;
+                            commentDTO.CreationDate = comment.CreationDate;
+                            commentDTO.IsBlocked = comment.IsBlocked;
+                            commentDTO.MainComment = comment.MainComment;
+                            commentDTO.UserID = comment.UserID;
+                            commentDTO.tblUser.Username = comment.tblUser.Username;
+                            commentDTO.tblUser.ProfileImage = comment.tblUser.ProfileImage;
+
+                            commentsDTO.Add(commentDTO);
+                        }
+                    }
+                    return commentsDTO;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                return null;
+            }
+        }
+        #endregion
     }
 }
