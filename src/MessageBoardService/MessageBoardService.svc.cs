@@ -17,8 +17,9 @@ namespace MessageBoardService
     // NOTE: In order to launch WCF Test Client for testing this service, please select MessageBoardService.svc or MessageBoardService.svc.cs at the Solution Explorer and start debugging.
     public class MessageBoardService : IMessageBoardService
     {
+        UserDTO returnUser = new UserDTO();
         #region InsertNewUser
-        public int InsertNewUser(UserDTO user)
+        public UserDTO InsertNewUser(UserDTO user)
         {
             try
             {
@@ -26,7 +27,7 @@ namespace MessageBoardService
                 {
                     tblUser addUser = context.tblUsers.Create();
 
-                    addUser.FirstName = user.FirstName;
+                    //addUser.FirstName = user.FirstName;
                     addUser.LastName = user.LastName;
                     addUser.Username = user.Username;
                     addUser.PasswordHash = user.PasswordHash;
@@ -41,14 +42,16 @@ namespace MessageBoardService
 
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
-                    return addUser.UserID;
+                    returnUser.UserID = addUser.UserID;
+                    
+                    return returnUser;
                 }
 
             }
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return 0;
+                return returnUser;
             }
             
         }
@@ -70,7 +73,6 @@ namespace MessageBoardService
                         user.PasswordHash = login.PasswordHash;
                         user.PasswordSalt = login.PasswordSalt;
                         user.UserID = login.UserID;
-
                         return user;
                     }
                     else
@@ -325,6 +327,56 @@ namespace MessageBoardService
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
                 return null;
+            }
+        }
+        #endregion
+
+
+        #region ChangeProfilePicture
+        public bool ChangeProfilePicture(UserDTO user)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var userUpdated = context.tblUsers.FirstOrDefault(x => x.UserID == user.UserID);
+                    if (userUpdated != null)
+                    {
+                        userUpdated.ProfileImage = user.ProfileImage;
+                        context.SaveChanges();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetProfilePicture
+        public UserDTO GetProfilePicture(int userID)
+        {
+            try
+            {
+                UserDTO user = new UserDTO();
+                using (var context = new MessageBoardEntities())
+                {
+                    var userProfilePicture = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
+
+                    if (userProfilePicture != null)
+                    {
+                        user.ProfileImage = userProfilePicture.ProfileImage;
+                    }
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
         #endregion

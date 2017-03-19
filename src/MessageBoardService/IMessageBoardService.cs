@@ -13,7 +13,7 @@ namespace MessageBoardService
     public interface IMessageBoardService
     {
         [OperationContract]
-        int InsertNewUser(UserDTO user);
+        UserDTO InsertNewUser(UserDTO user);
         [OperationContract]
         UserDTO CheckUserAndPassword(string username);
         [OperationContract]
@@ -30,5 +30,9 @@ namespace MessageBoardService
         bool AddNewPost(PostDTO addPost);
         [OperationContract]
         List<PostDTO> FillPostsGrid();
+        [OperationContract]
+        bool ChangeProfilePicture(UserDTO user);
+        [OperationContract]
+        UserDTO GetProfilePicture(int userID);
     }
 }
