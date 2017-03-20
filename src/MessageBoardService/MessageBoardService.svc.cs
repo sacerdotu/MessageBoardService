@@ -27,7 +27,7 @@ namespace MessageBoardService
                 {
                     tblUser addUser = context.tblUsers.Create();
 
-                    //addUser.FirstName = user.FirstName;
+                    addUser.FirstName = user.FirstName;
                     addUser.LastName = user.LastName;
                     addUser.Username = user.Username;
                     addUser.PasswordHash = user.PasswordHash;
@@ -333,7 +333,6 @@ namespace MessageBoardService
             }
         }
         #endregion
-
 
         #region ChangeProfilePicture
         public bool ChangeProfilePicture(UserDTO user)
