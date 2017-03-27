@@ -36,5 +36,7 @@ namespace MessageBoardService
         UserDTO GetProfilePicture(int userID);
         [OperationContract]
         List<CommentDTO> GetCommentsForPostID(int postID);
+        [OperationContract]
+        bool AddComment(CommentDTO addNewComment);
     }
 }

@@ -423,5 +423,32 @@ namespace MessageBoardService
             }
         }
         #endregion
+
+        #region AddComment
+        public bool AddComment(CommentDTO addNewComment)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities()) 
+                {
+                    tblComment addComment = new tblComment();
+                    addComment.CommentContent = addNewComment.CommentContent;
+                    addComment.CreationDate = addNewComment.CreationDate;
+                    addComment.IsBlocked = addNewComment.IsBlocked;
+                    addComment.MainComment = addNewComment.MainComment;
+                    addComment.PostID = addNewComment.PostID;
+                    addComment.UserID = addNewComment.UserID;
+                    context.tblComments.Add(addComment);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        #endregion
     }
 }
