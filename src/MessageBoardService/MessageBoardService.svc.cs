@@ -18,6 +18,7 @@ namespace MessageBoardService
     public class MessageBoardService : IMessageBoardService
     {
         UserDTO returnUser = new UserDTO();
+
         #region InsertNewUser
         public UserDTO InsertNewUser(UserDTO user)
         {
@@ -52,9 +53,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                returnUser.IsError = true;
-                returnUser.ErrorMessage = ex.Message;
-                return returnUser;
+                throw ex;
             }
             
         }
@@ -75,19 +74,15 @@ namespace MessageBoardService
                         user.Username = login.Username;
                         user.PasswordHash = login.PasswordHash;
                         user.PasswordSalt = login.PasswordSalt;
-                        user.UserID = login.UserID;
-                        return user;
+                        user.UserID = login.UserID;  
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return user;
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return null;
+                throw ex;
             }
         }
         #endregion
@@ -120,19 +115,15 @@ namespace MessageBoardService
                             userDTO.IsAdministrator = user.IsAdministrator;
 
                             usersList.Add(userDTO);
-                        }
-                        return usersList;
-                    }
-                    else
-                    {
-                        return null;
+                        }   
                     }
                 }
+                return usersList;
             }
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return null;
+                throw ex;
             }
         }
         #endregion
@@ -168,7 +159,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return null;
+                throw ex;
             }
         }
         #endregion
@@ -194,7 +185,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                throw;
+                throw ex;
             }
         }
         #endregion
@@ -212,18 +203,14 @@ namespace MessageBoardService
                         userUpdated.PasswordHash = user.PasswordHash;
                         userUpdated.PasswordSalt = user.PasswordSalt;
                         context.SaveChanges();
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return false;
+                throw ex;
             }
         }
         #endregion
@@ -250,7 +237,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return false;
+                throw ex;
             }
         }
         #endregion
@@ -267,7 +254,7 @@ namespace MessageBoardService
                         addNewPost.PostText = addPost.PostText;
                         addNewPost.IsPublished = true;
                         addNewPost.CreationDate = DateTime.Now;
-
+                        addNewPost.PostImage = addPost.PostImage;
                         context.tblPosts.Add(addNewPost);
                         context.SaveChanges();
                         return true;
@@ -276,7 +263,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return false;
+                throw ex;
             }
         }
         #endregion
@@ -318,18 +305,15 @@ namespace MessageBoardService
 
                             addPosts.Add(postDTO);
                         }
-                        return addPosts;
+                        
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return addPosts;
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
-                return null;
+                throw ex;
             }
         }
         #endregion
@@ -352,7 +336,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
                 throw ex;
             }
         }
@@ -377,7 +361,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
                 throw ex;
             }
         }
@@ -429,7 +413,7 @@ namespace MessageBoardService
         {
             try
             {
-                using (var context = new MessageBoardEntities()) 
+                using (var context = new MessageBoardEntities())
                 {
                     tblComment addComment = new tblComment();
                     addComment.CommentContent = addNewComment.CommentContent;
@@ -445,6 +429,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
                 throw ex;
             }
 
