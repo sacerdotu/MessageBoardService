@@ -13,7 +13,7 @@ namespace MessageBoardService
     public interface IMessageBoardService
     {
         [OperationContract]
-        UserDTO InsertNewUser(UserDTO user);
+        bool InsertNewUser(UserDTO user);
         [OperationContract]
         UserDTO CheckUserAndPassword(string username);
         [OperationContract]

@@ -17,36 +17,26 @@ namespace MessageBoardService
     // NOTE: In order to launch WCF Test Client for testing this service, please select MessageBoardService.svc or MessageBoardService.svc.cs at the Solution Explorer and start debugging.
     public class MessageBoardService : IMessageBoardService
     {
-        UserDTO returnUser = new UserDTO();
 
         #region InsertNewUser
-        public UserDTO InsertNewUser(UserDTO user)
+        public bool InsertNewUser(UserDTO user)
         {
             try
             {
                 using (var context = new MessageBoardEntities())
                 {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<UserDTO, tblUser>();
+                    });
+                    IMapper mapper = config.CreateMapper();
                     tblUser addUser = context.tblUsers.Create();
-
-                    addUser.FirstName = user.FirstName;
-                    addUser.LastName = user.LastName;
-                    addUser.Username = user.Username;
-                    addUser.PasswordHash = user.PasswordHash;
-                    addUser.City = user.City;
-                    addUser.Country = user.Country;
-                    addUser.Function = user.Function;
-                    addUser.PasswordSalt = user.PasswordSalt;
-                    addUser.ProfileImage = user.ProfileImage;
-                    addUser.AccountCreationDate = DateTime.Now;
-                    addUser.IsActive = true;
-                    addUser.IsAdministrator = false;
+                    addUser = mapper.Map<UserDTO, tblUser>(user);
 
                     context.tblUsers.Add(addUser);
                     context.SaveChanges();
-                    returnUser.UserID = addUser.UserID;
-                    returnUser.IsError = false;
-                    
-                    return returnUser;
+
+                    return true;
                 }
 
             }
@@ -55,7 +45,7 @@ namespace MessageBoardService
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
                 throw ex;
             }
-            
+
         }
         #endregion
 
@@ -69,12 +59,12 @@ namespace MessageBoardService
                 {
                     var login = context.tblUsers.FirstOrDefault(x => x.Username == username);
 
-                    if(login != null)
+                    if (login != null)
                     {
                         user.Username = login.Username;
                         user.PasswordHash = login.PasswordHash;
                         user.PasswordSalt = login.PasswordSalt;
-                        user.UserID = login.UserID;  
+                        user.UserID = login.UserID;
                     }
                     return user;
                 }
@@ -93,29 +83,23 @@ namespace MessageBoardService
             List<UserDTO> usersList = new List<UserDTO>();
             try
             {
+
                 using (var context = new MessageBoardEntities())
                 {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<tblUser, UserDTO>();
+                    });
+                    IMapper mapper = config.CreateMapper();
                     var users = context.tblUsers;
+
                     if (users != null)
                     {
                         foreach (var user in users)
                         {
-                            UserDTO userDTO = new UserDTO();
-                            userDTO.UserID = user.UserID;
-                            userDTO.FirstName = user.FirstName;
-                            userDTO.LastName = user.LastName;
-                            userDTO.Username = user.Username;
-                            userDTO.PasswordHash = user.PasswordHash;
-                            userDTO.City = user.City;
-                            userDTO.Country = user.Country;
-                            userDTO.Function = user.Function;
-                            userDTO.PasswordSalt = user.PasswordSalt;
-                            userDTO.AccountCreationDate = user.AccountCreationDate;
-                            userDTO.IsActive = user.IsActive;
-                            userDTO.IsAdministrator = user.IsAdministrator;
-
+                            UserDTO userDTO = mapper.Map<tblUser, UserDTO>(user);
                             usersList.Add(userDTO);
-                        }   
+                        }
                     }
                 }
                 return usersList;
@@ -136,22 +120,15 @@ namespace MessageBoardService
             {
                 using (var context = new MessageBoardEntities())
                 {
-                    var user = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
-                    if(user != null)
+                    var config = new MapperConfiguration(cfg =>
                     {
-                        userDTO.UserID = user.UserID;
-                        userDTO.FirstName = user.FirstName;
-                        userDTO.LastName = user.LastName;
-                        userDTO.Username = user.Username;
-                        userDTO.PasswordHash = user.PasswordHash;
-                        userDTO.City = user.City;
-                        userDTO.Country = user.Country;
-                        userDTO.Function = user.Function;
-                        userDTO.PasswordSalt = user.PasswordSalt;
-                        userDTO.ProfileImage = user.ProfileImage;
-                        userDTO.AccountCreationDate = user.AccountCreationDate;
-                        userDTO.IsActive = user.IsActive;
-                        userDTO.IsAdministrator = user.IsAdministrator;
+                        cfg.CreateMap<tblUser, UserDTO>();
+                    });
+                    IMapper mapper = config.CreateMapper();
+                    var user = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
+                    if (user != null)
+                    {
+                        userDTO = mapper.Map<tblUser, UserDTO>(user);
                     }
                     return userDTO;
                 }
@@ -249,15 +226,16 @@ namespace MessageBoardService
             {
                 using (var context = new MessageBoardEntities())
                 {
-                        tblPost addNewPost = context.tblPosts.Create();
-                        addNewPost.UserID = addPost.UserID;
-                        addNewPost.PostText = addPost.PostText;
-                        addNewPost.IsPublished = true;
-                        addNewPost.CreationDate = DateTime.Now;
-                        addNewPost.PostImage = addPost.PostImage;
-                        context.tblPosts.Add(addNewPost);
-                        context.SaveChanges();
-                        return true;
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<PostDTO, tblPost>();
+                    });
+                    IMapper mapper = config.CreateMapper();
+                    tblPost addNewPost = context.tblPosts.Create();
+                    addNewPost = mapper.Map<PostDTO, tblPost>(addPost);
+                    context.tblPosts.Add(addNewPost);
+                    context.SaveChanges();
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -277,9 +255,9 @@ namespace MessageBoardService
                 using (var context = new MessageBoardEntities())
                 {
                     var posts = context.tblPosts;
-                    if(posts != null)
+                    if (posts != null)
                     {
-                       
+
                         foreach (var post in posts)
                         {
                             PostDTO postDTO = new PostDTO();
@@ -305,7 +283,7 @@ namespace MessageBoardService
 
                             addPosts.Add(postDTO);
                         }
-                        
+
                     }
                     return addPosts;
                 }
@@ -415,13 +393,13 @@ namespace MessageBoardService
             {
                 using (var context = new MessageBoardEntities())
                 {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<CommentDTO, tblComment>();
+                    });
+                    IMapper mapper = config.CreateMapper();
                     tblComment addComment = new tblComment();
-                    addComment.CommentContent = addNewComment.CommentContent;
-                    addComment.CreationDate = addNewComment.CreationDate;
-                    addComment.IsBlocked = addNewComment.IsBlocked;
-                    addComment.MainComment = addNewComment.MainComment;
-                    addComment.PostID = addNewComment.PostID;
-                    addComment.UserID = addNewComment.UserID;
+                    addComment = mapper.Map<CommentDTO, tblComment>(addNewComment);
                     context.tblComments.Add(addComment);
                     context.SaveChanges();
                     return true;
