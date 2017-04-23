@@ -26,7 +26,6 @@ namespace MessageBoardDAL
         public string LastName { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
-        public string PasswordSalt { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
         public string Function { get; set; }
@@ -34,6 +33,7 @@ namespace MessageBoardDAL
         public bool IsAdministrator { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime AccountCreationDate { get; set; }
+        public string PasswordSalt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblComment> tblComments { get; set; }

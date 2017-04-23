@@ -1,4 +1,5 @@
-﻿using MessageBoardDTO;
+﻿using MessageBoardCommon;
+using MessageBoardDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,5 +39,7 @@ namespace MessageBoardService
         List<CommentDTO> GetCommentsForPostID(int postID);
         [OperationContract]
         bool AddComment(CommentDTO addNewComment);
+        [OperationContract]
+        List<TranslationDTO> GetTranslations();
     }
 }

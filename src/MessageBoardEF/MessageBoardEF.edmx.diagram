@@ -13,6 +13,7 @@
         <AssociationConnector Association="MessageBoardModel.FK_tblComment_tblUser" ManuallyRouted="false" />
         <AssociationConnector Association="MessageBoardModel.FK_tblPost_tblUser" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MessageBoardModel.C__RefactorLog" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblTranslation" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

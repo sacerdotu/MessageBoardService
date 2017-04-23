@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="C__RefactorLog.cs">
+      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+    </Compile>
     <Compile Include="MessageBoardDAL.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -74,6 +76,9 @@
     <Compile Include="tblPost.cs">
       <DependentUpon>MessageBoardDAL.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblTranslation.cs">
+      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblUser.cs">
       <DependentUpon>MessageBoardDAL.tt</DependentUpon>
     </Compile>
@@ -90,19 +95,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="MessageBoardDAL.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
       <LastGenOutput>MessageBoardDAL.Context.cs</LastGenOutput>
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Content>
     <Content Include="MessageBoardDAL.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
       <LastGenOutput>MessageBoardDAL.cs</LastGenOutput>
+      <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

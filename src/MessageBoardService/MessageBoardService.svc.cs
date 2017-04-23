@@ -396,6 +396,8 @@ namespace MessageBoardService
                     var config = new MapperConfiguration(cfg =>
                     {
                         cfg.CreateMap<CommentDTO, tblComment>();
+                        cfg.CreateMap<PostDTO, tblPost>();
+                        cfg.CreateMap<UserDTO, tblUser>();
                     });
                     IMapper mapper = config.CreateMapper();
                     tblComment addComment = new tblComment();
@@ -411,6 +413,40 @@ namespace MessageBoardService
                 throw ex;
             }
 
+        }
+        #endregion
+
+        #region GetTranslations
+        public List<TranslationDTO> GetTranslations()
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap < tblTranslation, TranslationDTO>();
+                    });
+                    var translations = context.tblTranslations;
+                    IMapper mapper = config.CreateMapper();
+                    List<TranslationDTO> returnTranslations = new List<TranslationDTO>();
+                    if (translations != null)
+                    {
+                        foreach (var item in translations)
+                        {
+                            TranslationDTO translation = mapper.Map<tblTranslation, TranslationDTO>(item);
+                            returnTranslations.Add(translation);
+                        }
+                        return returnTranslations;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                throw ex;
+            }
         }
         #endregion
     }

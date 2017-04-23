@@ -34,6 +34,15 @@
           <Property Name="IsPublished" Type="bit" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblTranslation">
+          <Key>
+            <PropertyRef Name="TranslationID" />
+          </Key>
+          <Property Name="TranslationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ControlName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowKey" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="tblUser">
           <Key>
             <PropertyRef Name="UserID" />
@@ -104,6 +113,7 @@
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblComment" EntityType="Self.tblComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPost" EntityType="Self.tblPost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTranslation" EntityType="Self.tblTranslation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__tblCommen__MainC__5DCAEF64" Association="Self.FK__tblCommen__MainC__5DCAEF64">
             <End Role="tblComment" EntitySet="tblComment" />
@@ -244,12 +254,22 @@
             <End Role="tblPost" EntitySet="tblPosts" />
           </AssociationSet>
           <EntitySet Name="C__RefactorLog" EntityType="MessageBoardModel.C__RefactorLog" />
+          <EntitySet Name="tblTranslations" EntityType="MessageBoardModel.tblTranslation" />
         </EntityContainer>
         <EntityType Name="C__RefactorLog">
           <Key>
             <PropertyRef Name="OperationKey" />
           </Key>
           <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTranslation">
+          <Key>
+            <PropertyRef Name="TranslationID" />
+          </Key>
+          <Property Name="TranslationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FormName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ControlName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RowKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -305,6 +325,16 @@
             <EntityTypeMapping TypeName="MessageBoardModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
                 <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTranslations">
+            <EntityTypeMapping TypeName="MessageBoardModel.tblTranslation">
+              <MappingFragment StoreEntitySet="tblTranslation">
+                <ScalarProperty Name="RowKey" ColumnName="RowKey" />
+                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+                <ScalarProperty Name="FormName" ColumnName="FormName" />
+                <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
