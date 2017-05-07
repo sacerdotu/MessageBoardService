@@ -25,10 +25,10 @@ namespace MessageBoardDAL
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public virtual DbSet<tblComment> tblComments { get; set; }
         public virtual DbSet<tblPost> tblPosts { get; set; }
-        public virtual DbSet<tblUser> tblUsers { get; set; }
-        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public virtual DbSet<tblTranslation> tblTranslations { get; set; }
+        public virtual DbSet<tblUser> tblUsers { get; set; }
     }
 }

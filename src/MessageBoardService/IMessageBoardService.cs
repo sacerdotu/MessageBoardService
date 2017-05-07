@@ -41,5 +41,7 @@ namespace MessageBoardService
         bool AddComment(CommentDTO addNewComment);
         [OperationContract]
         List<TranslationDTO> GetTranslations();
+        [OperationContract]
+        void InsertTranslations(Dictionary<string, string> translatedControls, string language);
     }
 }

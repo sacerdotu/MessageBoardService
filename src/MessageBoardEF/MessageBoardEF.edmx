@@ -36,12 +36,14 @@
         </EntityType>
         <EntityType Name="tblTranslation">
           <Key>
-            <PropertyRef Name="TranslationID" />
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="FormName" />
+            <PropertyRef Name="ControlName" />
           </Key>
-          <Property Name="TranslationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FormName" Type="nvarchar" MaxLength="50" />
-          <Property Name="ControlName" Type="nvarchar" MaxLength="50" />
-          <Property Name="RowKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="Language" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ControlName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -136,6 +138,35 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MessageBoardModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MessageBoardEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__RefactorLog" EntityType="MessageBoardModel.C__RefactorLog" />
+          <EntitySet Name="tblComments" EntityType="MessageBoardModel.tblComment" />
+          <EntitySet Name="tblPosts" EntityType="MessageBoardModel.tblPost" />
+          <EntitySet Name="tblTranslations" EntityType="MessageBoardModel.tblTranslation" />
+          <EntitySet Name="tblUsers" EntityType="MessageBoardModel.tblUser" />
+          <AssociationSet Name="FK__tblCommen__MainC__5DCAEF64" Association="MessageBoardModel.FK__tblCommen__MainC__5DCAEF64">
+            <End Role="tblComment" EntitySet="tblComments" />
+            <End Role="tblComment1" EntitySet="tblComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblCommen__PostI__5CD6CB2B" Association="MessageBoardModel.FK__tblCommen__PostI__5CD6CB2B">
+            <End Role="tblPost" EntitySet="tblPosts" />
+            <End Role="tblComment" EntitySet="tblComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblComment_tblUser" Association="MessageBoardModel.FK_tblComment_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblComment" EntitySet="tblComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPost_tblUser" Association="MessageBoardModel.FK_tblPost_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblPost" EntitySet="tblPosts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblComment">
           <Key>
             <PropertyRef Name="CommentID" />
@@ -144,13 +175,13 @@
           <Property Name="UserID" Type="Int32" />
           <Property Name="PostID" Type="Int32" />
           <Property Name="MainComment" Type="Int32" />
-          <Property Name="CommentContent" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsBlocked" Type="Boolean" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="tblComment1" Relationship="Self.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment" ToRole="tblComment1" />
-          <NavigationProperty Name="tblComment2" Relationship="Self.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment1" ToRole="tblComment" />
-          <NavigationProperty Name="tblPost" Relationship="Self.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblComment" ToRole="tblPost" />
-          <NavigationProperty Name="tblUser" Relationship="Self.FK_tblComment_tblUser" FromRole="tblComment" ToRole="tblUser" />
+          <NavigationProperty Name="tblComment1" Relationship="MessageBoardModel.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment" ToRole="tblComment1" />
+          <NavigationProperty Name="tblComment2" Relationship="MessageBoardModel.FK__tblCommen__MainC__5DCAEF64" FromRole="tblComment1" ToRole="tblComment" />
+          <NavigationProperty Name="tblPost" Relationship="MessageBoardModel.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblComment" ToRole="tblPost" />
+          <NavigationProperty Name="tblUser" Relationship="MessageBoardModel.FK_tblComment_tblUser" FromRole="tblComment" ToRole="tblUser" />
         </EntityType>
         <EntityType Name="tblPost">
           <Key>
@@ -158,36 +189,47 @@
           </Key>
           <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="PostText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostText" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="PostImage" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IsPublished" Type="Boolean" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="tblComments" Relationship="Self.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblPost" ToRole="tblComment" />
-          <NavigationProperty Name="tblUser" Relationship="Self.FK_tblPost_tblUser" FromRole="tblPost" ToRole="tblUser" />
+          <NavigationProperty Name="tblComments" Relationship="MessageBoardModel.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblPost" ToRole="tblComment" />
+          <NavigationProperty Name="tblUser" Relationship="MessageBoardModel.FK_tblPost_tblUser" FromRole="tblPost" ToRole="tblUser" />
+        </EntityType>
+        <EntityType Name="tblTranslation">
+          <Key>
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="FormName" />
+            <PropertyRef Name="ControlName" />
+          </Key>
+          <Property Name="Language" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FormName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ControlName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Function" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Function" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IsAdministrator" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="AccountCreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="tblComments" Relationship="Self.FK_tblComment_tblUser" FromRole="tblUser" ToRole="tblComment" />
-          <NavigationProperty Name="tblPosts" Relationship="Self.FK_tblPost_tblUser" FromRole="tblUser" ToRole="tblPost" />
-          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblComments" Relationship="MessageBoardModel.FK_tblComment_tblUser" FromRole="tblUser" ToRole="tblComment" />
+          <NavigationProperty Name="tblPosts" Relationship="MessageBoardModel.FK_tblPost_tblUser" FromRole="tblUser" ToRole="tblPost" />
         </EntityType>
         <Association Name="FK__tblCommen__MainC__5DCAEF64">
-          <End Role="tblComment" Type="Self.tblComment" Multiplicity="0..1" />
-          <End Role="tblComment1" Type="Self.tblComment" Multiplicity="*" />
+          <End Type="MessageBoardModel.tblComment" Role="tblComment" Multiplicity="0..1" />
+          <End Type="MessageBoardModel.tblComment" Role="tblComment1" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblComment">
               <PropertyRef Name="CommentID" />
@@ -198,8 +240,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__tblCommen__PostI__5CD6CB2B">
-          <End Role="tblPost" Type="Self.tblPost" Multiplicity="0..1" />
-          <End Role="tblComment" Type="Self.tblComment" Multiplicity="*" />
+          <End Type="MessageBoardModel.tblPost" Role="tblPost" Multiplicity="0..1" />
+          <End Type="MessageBoardModel.tblComment" Role="tblComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblPost">
               <PropertyRef Name="PostID" />
@@ -210,8 +252,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblComment_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
-          <End Role="tblComment" Type="Self.tblComment" Multiplicity="*" />
+          <End Type="MessageBoardModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="MessageBoardModel.tblComment" Role="tblComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblUser">
               <PropertyRef Name="UserID" />
@@ -222,8 +264,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblPost_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
-          <End Role="tblPost" Type="Self.tblPost" Multiplicity="*" />
+          <End Type="MessageBoardModel.tblUser" Role="tblUser" Multiplicity="1" />
+          <End Type="MessageBoardModel.tblPost" Role="tblPost" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblUser">
               <PropertyRef Name="UserID" />
@@ -233,94 +275,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="MessageBoardEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="tblComments" EntityType="Self.tblComment" />
-          <EntitySet Name="tblPosts" EntityType="Self.tblPost" />
-          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
-          <AssociationSet Name="FK__tblCommen__MainC__5DCAEF64" Association="Self.FK__tblCommen__MainC__5DCAEF64">
-            <End Role="tblComment" EntitySet="tblComments" />
-            <End Role="tblComment1" EntitySet="tblComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tblCommen__PostI__5CD6CB2B" Association="Self.FK__tblCommen__PostI__5CD6CB2B">
-            <End Role="tblPost" EntitySet="tblPosts" />
-            <End Role="tblComment" EntitySet="tblComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblComment_tblUser" Association="Self.FK_tblComment_tblUser">
-            <End Role="tblUser" EntitySet="tblUsers" />
-            <End Role="tblComment" EntitySet="tblComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblPost_tblUser" Association="Self.FK_tblPost_tblUser">
-            <End Role="tblUser" EntitySet="tblUsers" />
-            <End Role="tblPost" EntitySet="tblPosts" />
-          </AssociationSet>
-          <EntitySet Name="C__RefactorLog" EntityType="MessageBoardModel.C__RefactorLog" />
-          <EntitySet Name="tblTranslations" EntityType="MessageBoardModel.tblTranslation" />
-        </EntityContainer>
-        <EntityType Name="C__RefactorLog">
-          <Key>
-            <PropertyRef Name="OperationKey" />
-          </Key>
-          <Property Name="OperationKey" Type="Guid" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tblTranslation">
-          <Key>
-            <PropertyRef Name="TranslationID" />
-          </Key>
-          <Property Name="TranslationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FormName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ControlName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RowKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MessageBoardModelStoreContainer" CdmEntityContainer="MessageBoardEntities">
-          <EntitySetMapping Name="tblComments">
-            <EntityTypeMapping TypeName="MessageBoardModel.tblComment">
-              <MappingFragment StoreEntitySet="tblComment">
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
-                <ScalarProperty Name="MainComment" ColumnName="MainComment" />
-                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
-                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblPosts">
-            <EntityTypeMapping TypeName="MessageBoardModel.tblPost">
-              <MappingFragment StoreEntitySet="tblPost">
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="PostText" ColumnName="PostText" />
-                <ScalarProperty Name="PostImage" ColumnName="PostImage" />
-                <ScalarProperty Name="IsPublished" ColumnName="IsPublished" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblUsers">
-            <EntityTypeMapping TypeName="MessageBoardModel.tblUser">
-              <MappingFragment StoreEntitySet="tblUser">
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Function" ColumnName="Function" />
-                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
-                <ScalarProperty Name="IsAdministrator" ColumnName="IsAdministrator" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AccountCreationDate" ColumnName="AccountCreationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C__RefactorLog">
             <EntityTypeMapping TypeName="MessageBoardModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
@@ -328,13 +288,57 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblComments">
+            <EntityTypeMapping TypeName="MessageBoardModel.tblComment">
+              <MappingFragment StoreEntitySet="tblComment">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+                <ScalarProperty Name="MainComment" ColumnName="MainComment" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPosts">
+            <EntityTypeMapping TypeName="MessageBoardModel.tblPost">
+              <MappingFragment StoreEntitySet="tblPost">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IsPublished" ColumnName="IsPublished" />
+                <ScalarProperty Name="PostImage" ColumnName="PostImage" />
+                <ScalarProperty Name="PostText" ColumnName="PostText" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblTranslations">
             <EntityTypeMapping TypeName="MessageBoardModel.tblTranslation">
               <MappingFragment StoreEntitySet="tblTranslation">
-                <ScalarProperty Name="RowKey" ColumnName="RowKey" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ControlName" ColumnName="ControlName" />
                 <ScalarProperty Name="FormName" ColumnName="FormName" />
-                <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="MessageBoardModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="AccountCreationDate" ColumnName="AccountCreationDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsAdministrator" ColumnName="IsAdministrator" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="Function" ColumnName="Function" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -449,5 +449,48 @@ namespace MessageBoardService
             }
         }
         #endregion
+
+        #region InsertTranslations
+        public void InsertTranslations(Dictionary<string, string> translatedControls, string language)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<TranslationDTO, tblTranslation>();
+                    });
+                    IMapper mapper = config.CreateMapper();
+                    foreach (var translation in translatedControls)
+                    {
+                        string formName = translation.Key.Split('|')[0];
+                        string controlName = translation.Key.Split('|')[1];
+                        var findTranslation = context.tblTranslations.FirstOrDefault(x => x.Language == language &&
+                                x.FormName == formName && x.ControlName == controlName);
+
+                        if(findTranslation == null)
+                        {
+                            TranslationDTO newTranslation = new TranslationDTO();
+                            newTranslation.Language = language;
+                            newTranslation.FormName = formName;
+                            newTranslation.ControlName = controlName;
+                            newTranslation.Description = translation.Value;
+
+                            tblTranslation addTranslation = new tblTranslation();
+                            addTranslation = mapper.Map<TranslationDTO, tblTranslation>(newTranslation);
+                            context.tblTranslations.Add(addTranslation);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                throw ex;
+            }
+        }
+        #endregion
     }
 }

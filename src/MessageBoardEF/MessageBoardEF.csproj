@@ -52,17 +52,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="C__RefactorLog.cs">
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="MessageBoardDAL.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessageBoardDAL.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageBoardDAL.cs">
+    <Compile Include="MessageBoardEF.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="MessageBoardEF.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -71,16 +71,16 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblComment.cs">
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="tblPost.cs">
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="tblTranslation.cs">
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUser.cs">
-      <DependentUpon>MessageBoardDAL.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -103,9 +103,9 @@
       <LastGenOutput>MessageBoardDAL.Context.cs</LastGenOutput>
       <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Content>
-    <Content Include="MessageBoardDAL.tt">
+    <Content Include="MessageBoardEF.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessageBoardDAL.cs</LastGenOutput>
+      <LastGenOutput>MessageBoardEF.cs</LastGenOutput>
       <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Content>
   </ItemGroup>
