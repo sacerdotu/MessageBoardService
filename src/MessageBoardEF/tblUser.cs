@@ -34,9 +34,11 @@ namespace MessageBoardDAL
         public bool IsAdministrator { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime AccountCreationDate { get; set; }
+        public Nullable<int> LanguageID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblComment> tblComments { get; set; }
+        public virtual tblLanguage tblLanguage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblPost> tblPosts { get; set; }
     }

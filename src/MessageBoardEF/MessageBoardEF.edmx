@@ -23,6 +23,14 @@
           <Property Name="IsBlocked" Type="bit" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblLanguage">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Culture" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="tblPost">
           <Key>
             <PropertyRef Name="PostID" />
@@ -36,14 +44,14 @@
         </EntityType>
         <EntityType Name="tblTranslation">
           <Key>
-            <PropertyRef Name="Language" />
-            <PropertyRef Name="FormName" />
-            <PropertyRef Name="ControlName" />
+            <PropertyRef Name="TranslationID" />
           </Key>
-          <Property Name="Language" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="FormName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ControlName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="TranslationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TranslationKey" Type="nvarchar" MaxLength="100" />
+          <Property Name="LanguageID" Type="int" Nullable="false" />
+          <Property Name="Translation" Type="nchar" MaxLength="150" />
+          <Property Name="DateAdded" Type="datetime" />
+          <Property Name="DateModified" Type="datetime" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -62,6 +70,7 @@
           <Property Name="IsAdministrator" Type="bit" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="AccountCreationDate" Type="datetime" Nullable="false" />
+          <Property Name="LanguageID" Type="int" />
         </EntityType>
         <Association Name="FK__tblCommen__MainC__5DCAEF64">
           <End Role="tblComment" Type="Self.tblComment" Multiplicity="0..1" />
@@ -99,6 +108,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblLanguage_tblTranslation">
+          <End Role="tblLanguage" Type="Self.tblLanguage" Multiplicity="1" />
+          <End Role="tblTranslation" Type="Self.tblTranslation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLanguage">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="tblTranslation">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblPost_tblUser">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblPost" Type="Self.tblPost" Multiplicity="*" />
@@ -111,9 +132,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblUser_tblLanguage">
+          <End Role="tblLanguage" Type="Self.tblLanguage" Multiplicity="0..1" />
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLanguage">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="tblUser">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MessageBoardModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblComment" EntityType="Self.tblComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLanguage" EntityType="Self.tblLanguage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPost" EntityType="Self.tblPost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTranslation" EntityType="Self.tblTranslation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
@@ -129,9 +163,17 @@
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblComment" EntitySet="tblComment" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblLanguage_tblTranslation" Association="Self.FK_tblLanguage_tblTranslation">
+            <End Role="tblLanguage" EntitySet="tblLanguage" />
+            <End Role="tblTranslation" EntitySet="tblTranslation" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblPost_tblUser" Association="Self.FK_tblPost_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblPost" EntitySet="tblPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUser_tblLanguage" Association="Self.FK_tblUser_tblLanguage">
+            <End Role="tblLanguage" EntitySet="tblLanguage" />
+            <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -141,6 +183,7 @@
         <EntityContainer Name="MessageBoardEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__RefactorLog" EntityType="MessageBoardModel.C__RefactorLog" />
           <EntitySet Name="tblComments" EntityType="MessageBoardModel.tblComment" />
+          <EntitySet Name="tblLanguages" EntityType="MessageBoardModel.tblLanguage" />
           <EntitySet Name="tblPosts" EntityType="MessageBoardModel.tblPost" />
           <EntitySet Name="tblTranslations" EntityType="MessageBoardModel.tblTranslation" />
           <EntitySet Name="tblUsers" EntityType="MessageBoardModel.tblUser" />
@@ -155,6 +198,14 @@
           <AssociationSet Name="FK_tblComment_tblUser" Association="MessageBoardModel.FK_tblComment_tblUser">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblComment" EntitySet="tblComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLanguage_tblTranslation" Association="MessageBoardModel.FK_tblLanguage_tblTranslation">
+            <End Role="tblLanguage" EntitySet="tblLanguages" />
+            <End Role="tblTranslation" EntitySet="tblTranslations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUser_tblLanguage" Association="MessageBoardModel.FK_tblUser_tblLanguage">
+            <End Role="tblLanguage" EntitySet="tblLanguages" />
+            <End Role="tblUser" EntitySet="tblUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_tblPost_tblUser" Association="MessageBoardModel.FK_tblPost_tblUser">
             <End Role="tblUser" EntitySet="tblUsers" />
@@ -183,6 +234,16 @@
           <NavigationProperty Name="tblPost" Relationship="MessageBoardModel.FK__tblCommen__PostI__5CD6CB2B" FromRole="tblComment" ToRole="tblPost" />
           <NavigationProperty Name="tblUser" Relationship="MessageBoardModel.FK_tblComment_tblUser" FromRole="tblComment" ToRole="tblUser" />
         </EntityType>
+        <EntityType Name="tblLanguage">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Culture" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblTranslations" Relationship="MessageBoardModel.FK_tblLanguage_tblTranslation" FromRole="tblLanguage" ToRole="tblTranslation" />
+          <NavigationProperty Name="tblUsers" Relationship="MessageBoardModel.FK_tblUser_tblLanguage" FromRole="tblLanguage" ToRole="tblUser" />
+        </EntityType>
         <EntityType Name="tblPost">
           <Key>
             <PropertyRef Name="PostID" />
@@ -198,14 +259,15 @@
         </EntityType>
         <EntityType Name="tblTranslation">
           <Key>
-            <PropertyRef Name="Language" />
-            <PropertyRef Name="FormName" />
-            <PropertyRef Name="ControlName" />
+            <PropertyRef Name="TranslationID" />
           </Key>
-          <Property Name="Language" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FormName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ControlName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TranslationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TranslationKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LanguageID" Type="Int32" Nullable="false" />
+          <Property Name="Translation" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblLanguage" Relationship="MessageBoardModel.FK_tblLanguage_tblTranslation" FromRole="tblTranslation" ToRole="tblLanguage" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -224,7 +286,9 @@
           <Property Name="IsAdministrator" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="AccountCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LanguageID" Type="Int32" />
           <NavigationProperty Name="tblComments" Relationship="MessageBoardModel.FK_tblComment_tblUser" FromRole="tblUser" ToRole="tblComment" />
+          <NavigationProperty Name="tblLanguage" Relationship="MessageBoardModel.FK_tblUser_tblLanguage" FromRole="tblUser" ToRole="tblLanguage" />
           <NavigationProperty Name="tblPosts" Relationship="MessageBoardModel.FK_tblPost_tblUser" FromRole="tblUser" ToRole="tblPost" />
         </EntityType>
         <Association Name="FK__tblCommen__MainC__5DCAEF64">
@@ -263,6 +327,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblLanguage_tblTranslation">
+          <End Type="MessageBoardModel.tblLanguage" Role="tblLanguage" Multiplicity="1" />
+          <End Type="MessageBoardModel.tblTranslation" Role="tblTranslation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLanguage">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="tblTranslation">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUser_tblLanguage">
+          <End Type="MessageBoardModel.tblLanguage" Role="tblLanguage" Multiplicity="0..1" />
+          <End Type="MessageBoardModel.tblUser" Role="tblUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLanguage">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="tblUser">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblPost_tblUser">
           <End Type="MessageBoardModel.tblUser" Role="tblUser" Multiplicity="1" />
           <End Type="MessageBoardModel.tblPost" Role="tblPost" Multiplicity="*" />
@@ -275,7 +363,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -301,6 +389,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblLanguages">
+            <EntityTypeMapping TypeName="MessageBoardModel.tblLanguage">
+              <MappingFragment StoreEntitySet="tblLanguage">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Culture" ColumnName="Culture" />
+                <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblPosts">
             <EntityTypeMapping TypeName="MessageBoardModel.tblPost">
               <MappingFragment StoreEntitySet="tblPost">
@@ -316,16 +413,19 @@
           <EntitySetMapping Name="tblTranslations">
             <EntityTypeMapping TypeName="MessageBoardModel.tblTranslation">
               <MappingFragment StoreEntitySet="tblTranslation">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
-                <ScalarProperty Name="FormName" ColumnName="FormName" />
-                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="Translation" ColumnName="Translation" />
+                <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+                <ScalarProperty Name="TranslationKey" ColumnName="TranslationKey" />
+                <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblUsers">
             <EntityTypeMapping TypeName="MessageBoardModel.tblUser">
               <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
                 <ScalarProperty Name="AccountCreationDate" ColumnName="AccountCreationDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsAdministrator" ColumnName="IsAdministrator" />

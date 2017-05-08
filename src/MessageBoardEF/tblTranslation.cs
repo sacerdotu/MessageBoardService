@@ -14,9 +14,13 @@ namespace MessageBoardDAL
     
     public partial class tblTranslation
     {
-        public string Language { get; set; }
-        public string FormName { get; set; }
-        public string ControlName { get; set; }
-        public string Description { get; set; }
+        public int TranslationID { get; set; }
+        public string TranslationKey { get; set; }
+        public int LanguageID { get; set; }
+        public string Translation { get; set; }
+        public Nullable<System.DateTime> DateAdded { get; set; }
+        public Nullable<System.DateTime> DateModified { get; set; }
+    
+        public virtual tblLanguage tblLanguage { get; set; }
     }
 }

@@ -4,15 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="882022bd3a7c43a881dda1cdb91fdd53" Name="Diagram1">
-        <EntityTypeShape EntityType="MessageBoardModel.C__RefactorLog" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="MessageBoardModel.tblComment" Width="1.5" PointX="5.25" PointY="4.375" />
-        <EntityTypeShape EntityType="MessageBoardModel.tblPost" Width="1.5" PointX="3" PointY="7" />
-        <EntityTypeShape EntityType="MessageBoardModel.tblTranslation" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="MessageBoardModel.tblUser" Width="1.5" PointX="0.75" PointY="2.375" />
+      <Diagram DiagramId="882022bd3a7c43a881dda1cdb91fdd53" Name="Diagram1" ZoomLevel="98">
+        <EntityTypeShape EntityType="MessageBoardModel.C__RefactorLog" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblComment" Width="1.5" PointX="7.5" PointY="4.5" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblLanguage" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblPost" Width="1.5" PointX="5.25" PointY="7.125" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblTranslation" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="MessageBoardModel.tblUser" Width="1.5" PointX="3" PointY="2.375" />
         <AssociationConnector Association="MessageBoardModel.FK__tblCommen__MainC__5DCAEF64" />
         <AssociationConnector Association="MessageBoardModel.FK__tblCommen__PostI__5CD6CB2B" />
         <AssociationConnector Association="MessageBoardModel.FK_tblComment_tblUser" />
+        <AssociationConnector Association="MessageBoardModel.FK_tblLanguage_tblTranslation" />
+        <AssociationConnector Association="MessageBoardModel.FK_tblUser_tblLanguage" />
         <AssociationConnector Association="MessageBoardModel.FK_tblPost_tblUser" />
       </Diagram>
     </edmx:Diagrams>

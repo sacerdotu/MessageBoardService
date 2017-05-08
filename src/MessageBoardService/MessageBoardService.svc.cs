@@ -17,6 +17,7 @@ namespace MessageBoardService
     // NOTE: In order to launch WCF Test Client for testing this service, please select MessageBoardService.svc or MessageBoardService.svc.cs at the Solution Explorer and start debugging.
     public class MessageBoardService : IMessageBoardService
     {
+        private int? _languageID;
 
         #region InsertNewUser
         public bool InsertNewUser(UserDTO user)
@@ -65,6 +66,7 @@ namespace MessageBoardService
                         user.PasswordHash = login.PasswordHash;
                         user.PasswordSalt = login.PasswordSalt;
                         user.UserID = login.UserID;
+                        _languageID = login.LanguageID;
                     }
                     return user;
                 }
@@ -129,6 +131,10 @@ namespace MessageBoardService
                     if (user != null)
                     {
                         userDTO = mapper.Map<tblUser, UserDTO>(user);
+                        if(user.LanguageID != null)
+                        {
+                            userDTO.LanguageName = context.tblLanguages.FirstOrDefault(x => x.LanguageID == user.LanguageID).Name;
+                        }
                     }
                     return userDTO;
                 }
@@ -417,7 +423,7 @@ namespace MessageBoardService
         #endregion
 
         #region GetTranslations
-        public List<TranslationDTO> GetTranslations()
+        public List<TranslationDTO> GetTranslations(string languageName)
         {
             try
             {
@@ -427,7 +433,9 @@ namespace MessageBoardService
                     {
                         cfg.CreateMap < tblTranslation, TranslationDTO>();
                     });
-                    var translations = context.tblTranslations;
+
+                    int languageID = GetLanguageID(languageName);
+                    var translations = context.tblTranslations.Where(x => x.LanguageID == languageID);
                     IMapper mapper = config.CreateMapper();
                     List<TranslationDTO> returnTranslations = new List<TranslationDTO>();
                     if (translations != null)
@@ -451,7 +459,7 @@ namespace MessageBoardService
         #endregion
 
         #region InsertTranslations
-        public void InsertTranslations(Dictionary<string, string> translatedControls, string language)
+        public void InsertTranslations(Dictionary<string, string> translatedControls, string languageName)
         {
             try
             {
@@ -462,26 +470,82 @@ namespace MessageBoardService
                         cfg.CreateMap<TranslationDTO, tblTranslation>();
                     });
                     IMapper mapper = config.CreateMapper();
+
+                    int languageID = GetLanguageID(languageName);
                     foreach (var translation in translatedControls)
                     {
-                        string formName = translation.Key.Split('|')[0];
-                        string controlName = translation.Key.Split('|')[1];
-                        var findTranslation = context.tblTranslations.FirstOrDefault(x => x.Language == language &&
-                                x.FormName == formName && x.ControlName == controlName);
+                        var findTranslation = context.tblTranslations.FirstOrDefault(x => x.LanguageID == languageID &&
+                                x.TranslationKey == translation.Key);
 
                         if(findTranslation == null)
                         {
                             TranslationDTO newTranslation = new TranslationDTO();
-                            newTranslation.Language = language;
-                            newTranslation.FormName = formName;
-                            newTranslation.ControlName = controlName;
-                            newTranslation.Description = translation.Value;
+                            //tblTranslation addTranslation = new tblTranslation();
+                            newTranslation.LanguageID = languageID;
+                            newTranslation.TranslationKey = translation.Key;
+                            newTranslation.Translation = translation.Value;
+                            newTranslation.DateAdded = DateTime.Now;
+                            newTranslation.DateModified = DateTime.Now;
 
-                            tblTranslation addTranslation = new tblTranslation();
-                            addTranslation = mapper.Map<TranslationDTO, tblTranslation>(newTranslation);
+                            tblTranslation addTranslation = mapper.Map<TranslationDTO, tblTranslation>(newTranslation);
                             context.tblTranslations.Add(addTranslation);
-                            context.SaveChanges();
                         }
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetLanguageID
+        private int GetLanguageID(string languageName)
+        {
+            try
+            {
+                int languageID = -1;
+                using (var context = new MessageBoardEntities())
+                {
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<tblLanguage, LanguageDTO>();
+                    });
+                    var language = context.tblLanguages.FirstOrDefault(x => x.Name == languageName);
+                    IMapper mapper = config.CreateMapper();
+                    List<TranslationDTO> returnTranslations = new List<TranslationDTO>();
+                    if (language != null)
+                    {
+                        languageID = language.LanguageID;
+                    }
+                }
+                return languageID;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                throw ex;
+            }
+        }
+        #endregion
+
+
+        #region UpdateUserLanguage
+        public void UpdateUserLanguage(int userID, string languageName)
+        {
+            try
+            {
+                using (var context = new MessageBoardEntities())
+                {
+                    int languageID = GetLanguageID(languageName);
+                    var userUpdated = context.tblUsers.FirstOrDefault(x => x.UserID == userID);
+                    if (userUpdated != null)
+                    {
+                        userUpdated.LanguageID = languageID;
+                        context.SaveChanges();
                     }
                 }
             }

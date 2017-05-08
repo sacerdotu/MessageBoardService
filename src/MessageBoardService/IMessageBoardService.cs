@@ -40,8 +40,10 @@ namespace MessageBoardService
         [OperationContract]
         bool AddComment(CommentDTO addNewComment);
         [OperationContract]
-        List<TranslationDTO> GetTranslations();
+        List<TranslationDTO> GetTranslations(string languageName);
         [OperationContract]
-        void InsertTranslations(Dictionary<string, string> translatedControls, string language);
+        void InsertTranslations(Dictionary<string, string> translatedControls, string languageName);
+        [OperationContract]
+        void UpdateUserLanguage(int userID, string languageName);
     }
 }

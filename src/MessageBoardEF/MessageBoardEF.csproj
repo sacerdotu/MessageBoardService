@@ -54,10 +54,10 @@
     <Compile Include="C__RefactorLog.cs">
       <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageBoardDAL.Context.cs">
+    <Compile Include="MessageBoardEF.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MessageBoardDAL.Context.tt</DependentUpon>
+      <DependentUpon>MessageBoardEF.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="MessageBoardEF.cs">
       <AutoGen>True</AutoGen>
@@ -71,6 +71,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblComment.cs">
+      <DependentUpon>MessageBoardEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblLanguage.cs">
       <DependentUpon>MessageBoardEF.tt</DependentUpon>
     </Compile>
     <Compile Include="tblPost.cs">
@@ -98,9 +101,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MessageBoardDAL.Context.tt">
+    <Content Include="MessageBoardEF.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessageBoardDAL.Context.cs</LastGenOutput>
+      <LastGenOutput>MessageBoardEF.Context.cs</LastGenOutput>
       <DependentUpon>MessageBoardEF.edmx</DependentUpon>
     </Content>
     <Content Include="MessageBoardEF.tt">

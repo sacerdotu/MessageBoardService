@@ -1,10 +1,18 @@
 ﻿CREATE TABLE [dbo].[tblTranslation] (
-    [Language]    NVARCHAR (50)  NOT NULL,
-    [FormName]    NVARCHAR (50)  NOT NULL,
-    [ControlName] NVARCHAR (50)  NOT NULL,
-    [Description] NVARCHAR (100) NULL,
-    CONSTRAINT [PK_tblTranslation] PRIMARY KEY CLUSTERED ([Language] ASC, [FormName] ASC, [ControlName] ASC)
+    [TranslationID]  INT            IDENTITY (1, 1) NOT NULL,
+    [TranslationKey] NVARCHAR (100) NULL,
+    [LanguageID]     INT            NOT NULL,
+    [Translation]    NCHAR (150)    NULL,
+    [DateAdded]      DATETIME       NULL,
+    [DateModified]   DATETIME       NULL,
+    CONSTRAINT [PK_tblTranslation] PRIMARY KEY CLUSTERED ([TranslationID] ASC),
+    CONSTRAINT [FK_tblLanguage_tblTranslation] FOREIGN KEY ([LanguageID]) REFERENCES [dbo].[tblLanguage] ([LanguageID]),
+    CONSTRAINT [UC_LangID_TranslationKey] UNIQUE NONCLUSTERED ([LanguageID] ASC, [TranslationKey] ASC)
 );
+
+
+
+
 
 
 
