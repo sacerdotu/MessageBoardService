@@ -72,12 +72,21 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TableDependency, Version=5.3.0.0, Culture=neutral, PublicKeyToken=997305cc1a8bb802, processorArchitecture=MSIL">
+      <HintPath>..\packages\SqlTableDependency.5.3.0.0\lib\TableDependency.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TableDependency.SqlClient, Version=5.3.0.0, Culture=neutral, PublicKeyToken=c3b0a3ab9ceb00ff, processorArchitecture=MSIL">
+      <HintPath>..\packages\SqlTableDependency.5.3.0.0\lib\TableDependency.SqlClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MessageBoardService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMessageBoardClient.cs" />
     <Compile Include="MessageBoardService.svc.cs">
       <DependentUpon>MessageBoardService.svc</DependentUpon>
     </Compile>

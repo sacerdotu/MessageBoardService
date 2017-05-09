@@ -10,14 +10,24 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using TableDependency.SqlClient;
 
 namespace MessageBoardService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "MessageBoardService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select MessageBoardService.svc or MessageBoardService.svc.cs at the Solution Explorer and start debugging.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+
     public class MessageBoardService : IMessageBoardService
     {
         private int? _languageID;
+        private bool _refreshComments = false;
+        private IMessageBoardClient _messageBoardClient;
+
+        public MessageBoardService()
+        {
+
+        }
 
         #region InsertNewUser
         public bool InsertNewUser(UserDTO user)
@@ -52,7 +62,7 @@ namespace MessageBoardService
 
         #region CheckUserAndPassword
         public UserDTO CheckUserAndPassword(string username)
-        {
+        {            
             try
             {
                 UserDTO user = new UserDTO();
@@ -67,6 +77,8 @@ namespace MessageBoardService
                         user.PasswordSalt = login.PasswordSalt;
                         user.UserID = login.UserID;
                         _languageID = login.LanguageID;
+
+                        NotifiyWhenDBWasChanged();
                     }
                     return user;
                 }
@@ -556,5 +568,63 @@ namespace MessageBoardService
             }
         }
         #endregion
+
+        #region NotifyWhenDBWasChanged
+        public void NotifiyWhenDBWasChanged()
+        {
+            try
+            {
+                var context = new MessageBoardEntities();
+                //var connectionString = @"Data Source = DESKTOP-5U20CQ0\SQLEXPRESS1;" + "Initial Catalog=MessageBoard;" + "Integrated Security = True; ";
+                using (var tableDependency = new SqlTableDependency<CommentDTO>(context.Database.Connection.ConnectionString, "tblComment"))
+                {
+                    tableDependency.OnChanged += TableDependency_OnChanged;
+                    tableDependency.OnError += TableDependency_OnError;
+                    tableDependency.Start();
+                    Console.WriteLine("Start");
+                    //tableDependency.Stop();
+                    Console.WriteLine("Stop");
+                    Console.ReadLine();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private void TableDependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<CommentDTO> e)
+        {
+            if(e.ChangeType != TableDependency.Enums.ChangeType.None)
+            {
+                var changedEntity = e.Entity;
+                _messageBoardClient.ShowNotification((CommentDTO)changedEntity);
+            }
+        }
+
+        private void TableDependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        {
+            Exception ex = e.Error;
+            throw ex;
+        }
+        #endregion
+
+        public void RefreshComments()
+        {
+            try
+            {
+                if(_refreshComments)
+                {
+                    _refreshComments = false;
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
