@@ -10,7 +10,7 @@ using System.Text;
 
 namespace MessageBoardService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract =typeof(IMessageBoardClient))]
     public interface IMessageBoardService
     {
         [OperationContract]

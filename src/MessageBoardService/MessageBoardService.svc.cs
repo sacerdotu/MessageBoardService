@@ -4,6 +4,7 @@ using MessageBoardDAL;
 using MessageBoardDTO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,13 +17,12 @@ namespace MessageBoardService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "MessageBoardService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select MessageBoardService.svc or MessageBoardService.svc.cs at the Solution Explorer and start debugging.
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class MessageBoardService : IMessageBoardService
     {
         private int? _languageID;
         private bool _refreshComments = false;
-        private IMessageBoardClient _messageBoardClient;
+        private IMessageBoardClient _messageBoardClient = OperationContext.Current.GetCallbackChannel<IMessageBoardClient>();
 
         public MessageBoardService()
         {
@@ -77,8 +77,6 @@ namespace MessageBoardService
                         user.PasswordSalt = login.PasswordSalt;
                         user.UserID = login.UserID;
                         _languageID = login.LanguageID;
-
-                        NotifiyWhenDBWasChanged();
                     }
                     return user;
                 }
@@ -303,6 +301,7 @@ namespace MessageBoardService
                         }
 
                     }
+                    NotifiyWhenDBWasChanged();
                     return addPosts;
                 }
             }
@@ -580,11 +579,9 @@ namespace MessageBoardService
                 {
                     tableDependency.OnChanged += TableDependency_OnChanged;
                     tableDependency.OnError += TableDependency_OnError;
-                    tableDependency.Start();
-                    Console.WriteLine("Start");
+                    tableDependency.Start(150, 300);
                     //tableDependency.Stop();
-                    Console.WriteLine("Stop");
-                    Console.ReadLine();
+                    
                 }
             }
             catch (Exception ex)

@@ -12,3 +12,10 @@ src/MessageBoardEF/bin/
 src/MessageBoardService/bin/
 src/MessageBoardService/obj/
 src/MessageBoardDB/bin/Debug/
+src/MessageBoardDB/MessageBoardDB.dbmdl
+src/MessageBoardDB/MessageBoardDB.jfm
+src/MessageBoardEF/obj/Debug/
+src/MessageBoardService/bin/AutoMapper.dll
+src/MessageBoardService/bin/AutoMapper.xml
+src/MessageBoardService/bin/MessageBoardService.dll.config
+

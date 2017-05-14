@@ -11,7 +11,7 @@ namespace MessageBoardService
 
     public interface IMessageBoardClient
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ShowNotification(CommentDTO comment);
     }
 }
