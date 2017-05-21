@@ -4,14 +4,8 @@ using MessageBoardDAL;
 using MessageBoardDTO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity.Core;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using TableDependency.SqlClient;
 
 namespace MessageBoardService
 {
@@ -53,7 +47,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
 
@@ -62,7 +56,7 @@ namespace MessageBoardService
 
         #region CheckUserAndPassword
         public UserDTO CheckUserAndPassword(string username)
-        {            
+        {
             try
             {
                 UserDTO user = new UserDTO();
@@ -83,7 +77,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -118,7 +112,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -141,7 +135,7 @@ namespace MessageBoardService
                     if (user != null)
                     {
                         userDTO = mapper.Map<tblUser, UserDTO>(user);
-                        if(user.LanguageID != null)
+                        if (user.LanguageID != null)
                         {
                             userDTO.LanguageName = context.tblLanguages.FirstOrDefault(x => x.LanguageID == user.LanguageID).Name;
                         }
@@ -151,7 +145,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -177,7 +171,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -202,7 +196,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -229,7 +223,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -256,7 +250,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -301,13 +295,13 @@ namespace MessageBoardService
                         }
 
                     }
-                    NotifiyWhenDBWasChanged();
+                    //NotifiyWhenDBWasChanged();
                     return addPosts;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -331,7 +325,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -356,7 +350,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -397,7 +391,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 return null;
             }
         }
@@ -426,7 +420,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
 
@@ -442,7 +436,7 @@ namespace MessageBoardService
                 {
                     var config = new MapperConfiguration(cfg =>
                     {
-                        cfg.CreateMap < tblTranslation, TranslationDTO>();
+                        cfg.CreateMap<tblTranslation, TranslationDTO>();
                     });
 
                     int languageID = GetLanguageID(languageName);
@@ -463,7 +457,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -488,7 +482,7 @@ namespace MessageBoardService
                         var findTranslation = context.tblTranslations.FirstOrDefault(x => x.LanguageID == languageID &&
                                 x.TranslationKey == translation.Key);
 
-                        if(findTranslation == null)
+                        if (findTranslation == null)
                         {
                             TranslationDTO newTranslation = new TranslationDTO();
                             //tblTranslation addTranslation = new tblTranslation();
@@ -507,7 +501,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -537,7 +531,7 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
@@ -562,66 +556,10 @@ namespace MessageBoardService
             }
             catch (Exception ex)
             {
-                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message);
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
                 throw ex;
             }
         }
         #endregion
-
-        #region NotifyWhenDBWasChanged
-        public void NotifiyWhenDBWasChanged()
-        {
-            try
-            {
-                var context = new MessageBoardEntities();
-                //var connectionString = @"Data Source = DESKTOP-5U20CQ0\SQLEXPRESS1;" + "Initial Catalog=MessageBoard;" + "Integrated Security = True; ";
-                using (var tableDependency = new SqlTableDependency<CommentDTO>(context.Database.Connection.ConnectionString, "tblComment"))
-                {
-                    tableDependency.OnChanged += TableDependency_OnChanged;
-                    tableDependency.OnError += TableDependency_OnError;
-                    tableDependency.Start(150, 300);
-                    //tableDependency.Stop();
-                    
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        private void TableDependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<CommentDTO> e)
-        {
-            if(e.ChangeType != TableDependency.Enums.ChangeType.None)
-            {
-                var changedEntity = e.Entity;
-                _messageBoardClient.ShowNotification((CommentDTO)changedEntity);
-            }
-        }
-
-        private void TableDependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
-        {
-            Exception ex = e.Error;
-            throw ex;
-        }
-        #endregion
-
-        public void RefreshComments()
-        {
-            try
-            {
-                if(_refreshComments)
-                {
-                    _refreshComments = false;
-                    
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
     }
 }

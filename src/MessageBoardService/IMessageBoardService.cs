@@ -45,7 +45,5 @@ namespace MessageBoardService
         void InsertTranslations(Dictionary<string, string> translatedControls, string languageName);
         [OperationContract]
         void UpdateUserLanguage(int userID, string languageName);
-        [OperationContract]
-        void RefreshComments();
     }
 }
