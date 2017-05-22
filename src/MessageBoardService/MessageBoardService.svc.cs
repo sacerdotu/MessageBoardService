@@ -239,6 +239,7 @@ namespace MessageBoardService
                     var config = new MapperConfiguration(cfg =>
                     {
                         cfg.CreateMap<PostDTO, tblPost>();
+                        cfg.CreateMap<UserDTO, tblUser>();
                     });
                     IMapper mapper = config.CreateMapper();
                     tblPost addNewPost = context.tblPosts.Create();
@@ -537,7 +538,6 @@ namespace MessageBoardService
         }
         #endregion
 
-
         #region UpdateUserLanguage
         public void UpdateUserLanguage(int userID, string languageName)
         {
@@ -552,6 +552,75 @@ namespace MessageBoardService
                         userUpdated.LanguageID = languageID;
                         context.SaveChanges();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetInsertedCommentsNotifications
+        public List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID)
+        {
+            try
+            {
+                List<CommentDTO> commentsDTO = new List<CommentDTO>();
+                using (var context = new MessageBoardEntities())
+                {
+                    var comments = context.tblComments.Where(x => x.PostID == postID && x.CommentID > lastCommentID);
+                    if (comments != null)
+                    {
+                        foreach (var comment in comments)
+                        {
+                            CommentDTO commentDTO = new CommentDTO();
+                            UserDTO userDTO = new UserDTO();
+                            commentDTO.tblUser = userDTO;
+
+                            commentDTO.CommentID = comment.CommentID;
+                            commentDTO.MainComment = comment.MainComment;
+                            commentDTO.tblUser.Username = comment.tblUser.Username;
+
+                            commentsDTO.Add(commentDTO);
+                        }
+                    }
+                }
+                return commentsDTO;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetInsertedPostsNotifications
+        public List<PostDTO> GetInsertedPostsNotifications(int lastPostID)
+        {
+            try
+            {
+                List<PostDTO> addPosts = new List<PostDTO>();
+                using (var context = new MessageBoardEntities())
+                {
+                    var posts = context.tblPosts.Where(x => x.PostID > lastPostID);
+                    if (posts != null)
+                    {
+                        foreach (var post in posts)
+                        {
+                            PostDTO postDTO = new PostDTO();
+                            UserDTO userDTO = new UserDTO();
+                            postDTO.tblUser = userDTO;
+
+                            postDTO.PostID = post.PostID;
+                            postDTO.tblUser.Username = post.tblUser.Username;
+                            
+                            addPosts.Add(postDTO);
+                        }
+                    }
+                    return addPosts;
                 }
             }
             catch (Exception ex)

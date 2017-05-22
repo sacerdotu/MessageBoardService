@@ -45,5 +45,9 @@ namespace MessageBoardService
         void InsertTranslations(Dictionary<string, string> translatedControls, string languageName);
         [OperationContract]
         void UpdateUserLanguage(int userID, string languageName);
+        [OperationContract]
+        List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID);
+        [OperationContract]
+        List<PostDTO> GetInsertedPostsNotifications(int lastPostID);
     }
 }
