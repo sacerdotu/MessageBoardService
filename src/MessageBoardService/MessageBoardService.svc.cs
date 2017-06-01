@@ -62,15 +62,16 @@ namespace MessageBoardService
                 UserDTO user = new UserDTO();
                 using (var context = new MessageBoardEntities())
                 {
-                    var login = context.tblUsers.FirstOrDefault(x => x.Username == username);
+                    var config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<tblUser, UserDTO>();
+                    });
+                    tblUser login = context.tblUsers.FirstOrDefault(x => x.Username == username);
 
                     if (login != null)
                     {
-                        user.Username = login.Username;
-                        user.PasswordHash = login.PasswordHash;
-                        user.PasswordSalt = login.PasswordSalt;
-                        user.UserID = login.UserID;
-                        _languageID = login.LanguageID;
+                        IMapper mapper = config.CreateMapper();
+                        user = mapper.Map<tblUser, UserDTO>(login);
                     }
                     return user;
                 }
@@ -261,6 +262,7 @@ namespace MessageBoardService
         public List<PostDTO> FillPostsGrid()
         {
             try
+
             {
                 List<PostDTO> addPosts = new List<PostDTO>();
                 using (var context = new MessageBoardEntities())
@@ -294,9 +296,7 @@ namespace MessageBoardService
 
                             addPosts.Add(postDTO);
                         }
-
                     }
-                    //NotifiyWhenDBWasChanged();
                     return addPosts;
                 }
             }
@@ -393,7 +393,7 @@ namespace MessageBoardService
             catch (Exception ex)
             {
                 Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
-                return null;
+                throw ex;
             }
         }
         #endregion
@@ -516,12 +516,7 @@ namespace MessageBoardService
                 int languageID = -1;
                 using (var context = new MessageBoardEntities())
                 {
-                    var config = new MapperConfiguration(cfg =>
-                    {
-                        cfg.CreateMap<tblLanguage, LanguageDTO>();
-                    });
                     var language = context.tblLanguages.FirstOrDefault(x => x.Name == languageName);
-                    IMapper mapper = config.CreateMapper();
                     List<TranslationDTO> returnTranslations = new List<TranslationDTO>();
                     if (language != null)
                     {
