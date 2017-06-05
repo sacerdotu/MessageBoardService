@@ -2,6 +2,7 @@
 using MessageBoardCommon;
 using MessageBoardDAL;
 using MessageBoardDTO;
+using MessageBoardService.Helper_Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace MessageBoardService
         #endregion
 
         #region CheckUserAndPassword
-        public UserDTO CheckUserAndPassword(string username)
+        public UserDTO CheckUserAndPassword(string username, string password)
         {
             try
             {
@@ -67,11 +68,14 @@ namespace MessageBoardService
                         cfg.CreateMap<tblUser, UserDTO>();
                     });
                     tblUser login = context.tblUsers.FirstOrDefault(x => x.Username == username);
-
                     if (login != null)
                     {
-                        IMapper mapper = config.CreateMapper();
-                        user = mapper.Map<tblUser, UserDTO>(login);
+                        if (CheckUserPasswordByUsername(login, password))
+                        {
+
+                            IMapper mapper = config.CreateMapper();
+                            user = mapper.Map<tblUser, UserDTO>(login);
+                        }
                     }
                     return user;
                 }
@@ -82,6 +86,17 @@ namespace MessageBoardService
                 throw ex;
             }
         }
+        #endregion
+        public bool CheckUserPasswordByUsername(tblUser username, string password)
+        {
+            if (username.PasswordHash == PasswordHelper.GetHash(password, username.PasswordSalt))
+            {
+                return true;
+            }
+            return false;
+        }
+        #region GetUserPasswordByUsername
+
         #endregion
 
         #region FillUsersGrid
@@ -449,6 +464,7 @@ namespace MessageBoardService
                         foreach (var item in translations)
                         {
                             TranslationDTO translation = mapper.Map<tblTranslation, TranslationDTO>(item);
+                            translation.LanguageName = languageName;
                             returnTranslations.Add(translation);
                         }
                         return returnTranslations;
@@ -558,14 +574,14 @@ namespace MessageBoardService
         #endregion
 
         #region GetInsertedCommentsNotifications
-        public List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID)
+        public List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID, int userID)
         {
             try
             {
                 List<CommentDTO> commentsDTO = new List<CommentDTO>();
                 using (var context = new MessageBoardEntities())
                 {
-                    var comments = context.tblComments.Where(x => x.PostID == postID && x.CommentID > lastCommentID);
+                    var comments = context.tblComments.Where(x => x.PostID == postID && x.CommentID > lastCommentID && x.UserID == userID);
                     if (comments != null)
                     {
                         foreach (var comment in comments)
@@ -611,7 +627,7 @@ namespace MessageBoardService
 
                             postDTO.PostID = post.PostID;
                             postDTO.tblUser.Username = post.tblUser.Username;
-                            
+
                             addPosts.Add(postDTO);
                         }
                     }

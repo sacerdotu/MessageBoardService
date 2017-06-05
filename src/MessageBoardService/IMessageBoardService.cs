@@ -16,7 +16,7 @@ namespace MessageBoardService
         [OperationContract]
         bool InsertNewUser(UserDTO user);
         [OperationContract]
-        UserDTO CheckUserAndPassword(string username);
+        UserDTO CheckUserAndPassword(string username, string password);
         [OperationContract]
         List<UserDTO> FillUsersGrid();
         [OperationContract]
@@ -46,7 +46,7 @@ namespace MessageBoardService
         [OperationContract]
         void UpdateUserLanguage(int userID, string languageName);
         [OperationContract]
-        List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID);
+        List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID, int userID);
         [OperationContract]
         List<PostDTO> GetInsertedPostsNotifications(int lastPostID);
     }
