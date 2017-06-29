@@ -5,6 +5,7 @@ using MessageBoardDTO;
 using MessageBoardService.Helper_Classes;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel;
 
@@ -17,6 +18,8 @@ namespace MessageBoardService
     {
         private int? _languageID;
         private bool _refreshComments = false;
+        private string _connectionString = @"data source=DESKTOP-5U20CQ0\SQLEXPRESS1;initial catalog=MessageBoard;integrated security=True;MultipleActiveResultSets=True";
+        private ReportResponseDTO reportResponse;
         private IMessageBoardClient _messageBoardClient = OperationContext.Current.GetCallbackChannel<IMessageBoardClient>();
 
         public MessageBoardService()
@@ -640,6 +643,108 @@ namespace MessageBoardService
                 throw ex;
             }
         }
+        #endregion
+
+
+        #region SQL
+        #region GetReport
+        public List<ReportResponseDTO> GetReport(ReportRequestDTO request)
+        {
+            List<ReportResponseDTO> reportsList = new List<ReportResponseDTO>();
+            try
+            {
+                if (request != null)
+                {
+                    using (SqlConnection connection = new SqlConnection(_connectionString))
+                    {
+                        connection.Open();
+                        SqlCommand command = connection.CreateCommand();
+                        command.CommandText = @"SELECT DISTINCT
+                                                                tblUser.[UserID],
+                                                                tblUser.[FirstName],
+                                                                tblUser.[LastName],
+                                                                tblUser.[UserName],
+                                                                tblUser.[Country],
+                                                                tblUser.[City],
+                                                                (SELECT COUNT(tblComment.CommentID) FROM tblComment WHERE tblUser.UserID = tblComment.UserID AND tblComment.CreationDate > @CommentStartDate AND tblComment.CreationDate < @CommentEndDate) as NrOfComments ,
+                                                                (SELECT COUNT(tblPost.PostID) FROM tblPost WHERE tblUser.UserID = tblPost.UserID AND tblPost.CreationDate > @PostStartDate AND tblPost.CreationDate < @PostEndDate) as NrOfPosts 
+                                                                FROM tblUSer
+                                                                LEFT JOIN tblPost ON tblPost.UserID = tblUser.UserID
+                                                                LEFT JOIN tblComment ON tblComment.UserID = tblUser.UserID ";
+                        if (request.RequestForPost)
+                        {
+                            command.Parameters.Add("@PostStartDate", System.Data.SqlDbType.Date).Value = request.StartDate;
+                            command.Parameters.Add("@PostEndDate", System.Data.SqlDbType.Date).Value = request.EndDate;
+                            command.Parameters.Add("@CommentStartDate", System.Data.SqlDbType.Date).Value = DateTime.MinValue;
+                            command.Parameters.Add("@CommentEndDate", System.Data.SqlDbType.Date).Value = DateTime.MaxValue;
+                        }
+                        if(request.RequestForComment)
+                        {
+                            command.Parameters.Add("@CommentStartDate", System.Data.SqlDbType.Date).Value = request.StartDate;
+                            command.Parameters.Add("@CommentEndDate", System.Data.SqlDbType.Date).Value = request.EndDate;
+                            command.Parameters.Add("@PostStartDate", System.Data.SqlDbType.Date).Value = DateTime.MinValue;
+                            command.Parameters.Add("@PostEndDate", System.Data.SqlDbType.Date).Value = DateTime.MaxValue;
+                        }
+                        if(!request.RequestForComment && !request.RequestForPost)
+                        {
+                            command.Parameters.Add("@PostStartDate", System.Data.SqlDbType.Date).Value = request.StartDate;
+                            command.Parameters.Add("@PostEndDate", System.Data.SqlDbType.Date).Value = request.EndDate;
+                            command.Parameters.Add("@CommentStartDate", System.Data.SqlDbType.Date).Value = DateTime.MinValue;
+                            command.Parameters.Add("@CommentEndDate", System.Data.SqlDbType.Date).Value = DateTime.MaxValue;
+                        }
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                reportResponse = new ReportResponseDTO();
+                                if (!reader.IsDBNull(reader.GetOrdinal("UserID")))
+                                {
+                                    reportResponse.UserID = (reader.GetInt32(reader.GetOrdinal("UserID")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("FirstName")))
+                                {
+                                    reportResponse.FullName = (reader.GetString(reader.GetOrdinal("FirstName")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("LastName")))
+                                {
+                                    reportResponse.FullName = reportResponse.FullName + " " + (reader.GetString(reader.GetOrdinal("LastName")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("Username")))
+                                {
+                                    reportResponse.Username = (reader.GetString(reader.GetOrdinal("Username")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("Country")))
+                                {
+                                    reportResponse.Country = (reader.GetString(reader.GetOrdinal("Country")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("City")))
+                                {
+                                    reportResponse.City = (reader.GetString(reader.GetOrdinal("City")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("NrOfPosts")))
+                                {
+                                    reportResponse.NrOfPosts = (reader.GetInt32(reader.GetOrdinal("NrOfPosts")));
+                                }
+                                if (!reader.IsDBNull(reader.GetOrdinal("NrOfComments")))
+                                {
+                                    reportResponse.NrOfComments = (reader.GetInt32(reader.GetOrdinal("NrOfComments")));
+                                }
+                                reportsList.Add(reportResponse);
+                            }
+                        }
+                        connection.Close();
+                    }
+
+                }
+                return reportsList;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(System.Reflection.MethodBase.GetCurrentMethod().Name + ": " + ex.Message + "\n" + "StackTrace: " + ex.StackTrace);
+                throw ex;
+            }
+        }
+        #endregion
         #endregion
     }
 }

@@ -49,5 +49,7 @@ namespace MessageBoardService
         List<CommentDTO> GetInsertedCommentsNotifications(int lastCommentID, int postID, int userID);
         [OperationContract]
         List<PostDTO> GetInsertedPostsNotifications(int lastPostID);
+        [OperationContract]
+        List<ReportResponseDTO> GetReport(ReportRequestDTO request);
     }
 }
